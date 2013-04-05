@@ -32,7 +32,7 @@
             .logOptions()
             .build();
 
-            
+
     document.addEventListener("deviceready", onDeviceReady, false);
 
     // Cordova is loaded and it is now safe to make calls Cordova methods
@@ -76,7 +76,7 @@
 			$.ajax({
                 type: "POST",
                 url: "http://190.220.216.249/wstracking/WebService1.asmx/insertData",
-                data: "{movilid:6033,lat:'-32',lng:'-68',vel:0,rum:0,evento:0,panico:0,fueradeservicio:0,input3:0,input4:0,ocupado:0,input6:0,sms:0,contacto:0,conf:'conf'}",//data: recorridoArray[recorridoIndex],
+                data: recorridoArray[recorridoIndex],
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
 				success: function(data) {
@@ -87,9 +87,11 @@
                 }
             });
 			recorridoIndex = recorridoIndex +1;
+			$('#result').html("Envio completado!");
+			$("progressbar").fadeOut();
+
 		}else{
 			MyTimer =null;
-			recorridoIndex=0;
 		}
 	}
 	
@@ -135,6 +137,7 @@
         
 
 		$("#btnSend").click(function (){
+			recorridoIndex=0;
 			MyTimer = setInterval(function () { EnviarRecorrido(); }, 5000);
 		})
 	});
@@ -154,7 +157,7 @@
 			
 	
 			cantRecorrido = cantRecorrido + 1;
-			$("#resultXMLlist").append('<li>Lat:' + $(this).find("lat").text() + ' / Lng:' + $(this).find("lng").text() + '</li>').listview('refresh');
+			//$("#resultXMLlist").append('<li>Lat:' + $(this).find("lat").text() + ' / Lng:' + $(this).find("lng").text() + '</li>').listview('refresh');
 			
 		});
 		
@@ -215,9 +218,9 @@
 	</div>
 	<div data-role="content">	
     
-		<ol data-role="listview" id="resultXMLlist">
-		</ol>	
-        <a  href="" data-role="button" id="btnSend">Enviar</a>
+		<!--ol data-role="listview" id="resultXMLlist">
+		</ol-->	
+        <a  href="" data-role="button" id="btnSend">Enviar datos de recorrido.</a>
 
         <div id="progressbar"></div>
         <div id="result"></div>
