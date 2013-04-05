@@ -20,7 +20,8 @@
 	var cantRecorrido = 0;
 	var recorridoIndex = 0;
 	var MyTimer;
-
+	var sec = 30
+	var timer;
 	var progressbar1 = TolitoProgressBar('progressbar')
             .setOuterTheme('b')
             .setInnerTheme('e')
@@ -91,6 +92,7 @@
 		}else{
 			$('#result').html("Envio completado!" + recorridoIndex);
 			$("progressbar").fadeOut();
+			clearInterval(MyTimer);
 			MyTimer =null;
 		}
 	}
@@ -162,8 +164,34 @@
 		$("#btnSend").click(function (){
 			recorridoIndex=0;
 			$('#result').html("Simulando delay de AVL. Espere por favor...");
-			MyTimer = setInterval(function () { EnviarRecorrido(); }, 30000);
+			
+			$('#btnSend').fadeOut('fast');
+
+			MyTimer = setInterval(function () { 
+				EnviarRecorrido();
+				//timer para segundero
+				$('#countDown').fadeIn();
+				timer = setInterval(function() { 
+   					$('#countDown span').text(sec--);
+   					if (sec == -1) {
+      					$('#countDown').fadeOut('fast');
+      					clearInterval(timer);
+   					} 
+				}, 1000);
+			}, 30000);
 		})
+
+		$("#btnCancelar").click(function (){
+			$('#result').html("Envio canceladp!");
+			$("progressbar").fadeOut();
+			$('#btnSend').fadeIn('fast');
+			$('#countDown').fadeOut('fast');
+			clearInterval(MyTimer);
+			clearInterval(timer);
+			timer=null;
+			sec=30;
+			MyTimer =null;
+		});
 	});
 	
 	function parseXml(xml) {
@@ -245,7 +273,10 @@
 		<label for="idequipoSelect">Seleccione un movil: </label>
 		<select id="idequipoSelect" name="idequipoSelect"></select>
         <a  href="" data-role="button" id="btnSend">Enviar datos de recorrido.</a>
-
+		<div id="countDown"  style="display: none;">
+			Se enviará una nueva posición dentro de <span>30</span> seg.
+			<a  href="" data-role="button" id="btnCancelar">Cancelar</a>
+		</div>
         <div id="progressbar"></div>
         <div id="result"></div>
 	</div>
