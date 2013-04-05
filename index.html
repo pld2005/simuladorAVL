@@ -128,6 +128,7 @@
 //se ejecuta cuando se inicia la pagina indicada
 	$(document).on('pageinit', '#resultXML',  function(){
 		//leer moviles de la demo
+		var optionlist;
 		$.ajax({
 		type: "POST",
 		url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/GetMoviles",
@@ -139,7 +140,8 @@
             $.each(movil, function (index, product) {
 				optionlist += '<option value=' + movil.IdEquipo + '>' + movil.Patente + '</option>'; 
             });
-            $("#idequipoSelect").html(optionlist).selectmenu('refresh', true);    
+            $("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
+            $('#result').html(optionlist);   
 		},
 		error: function (err) {
 			alert('Error');
