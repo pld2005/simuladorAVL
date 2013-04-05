@@ -134,18 +134,6 @@
 		data: "{ idpropietario: 33}",
 		contentType: "application/json; charset=utf-8",
 		datatype: "json",
-		datafields: [
-			{ name: 'IdEquipo' },
-			{ name: 'fechahora' },
-			{ name: 'Patente' },
-			{ name: 'lat' },
-			{ name: 'lng' },
-			{ name: 'vel' },
-			{ name: 'cur' }
-		],
-		id: 'IdEquipo',
-		async: false,
-		cache: false,
 		success: function (data) {
 			var movil = data.d;
             $.each(movil, function (index, product) {
