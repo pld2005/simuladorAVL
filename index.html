@@ -6,24 +6,39 @@
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
-<link rel="stylesheet" href="js/jquery.mobile-1.3.0.min.css" />
+<link rel="stylesheet" href="css/jquery.mobile-1.3.0.min.css" />
+<link rel="stylesheet" type="text/css" href="css/tolito-1.0.2.min.css" />
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.mobile-1.3.0.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/cordova-2.5.0.js"></script>
+<script type="text/javascript" src="js/tolito-1.0.2.min.js"></script>
 <script type="text/javascript" charset="utf-8">
 
     // Wait for Cordova to load
     // 
-		var recorridoArray = [];
-		var cantRecorrido = 0;
-		var recorridoIndex = 0;
-		var MyTimer;
+	var recorridoArray = [];
+	var cantRecorrido = 0;
+	var recorridoIndex = 0;
+	var MyTimer;
+
+	var progressbar1 = TolitoProgressBar('progressbar')
+            .setOuterTheme('b')
+            .setInnerTheme('e')
+            .isMini(true)
+            .setMax(100)
+            .setStartFrom(0)
+            .setInterval(10)
+            .showCounter(true)
+            .logOptions()
+            .build();
+
+            
     document.addEventListener("deviceready", onDeviceReady, false);
 
     // Cordova is loaded and it is now safe to make calls Cordova methods
     //
     function onDeviceReady() {
-$.mobile.allowCrossDomainPages = true;
+		$.mobile.allowCrossDomainPages = true;
 
 		$("#btnchecknetwork").click(function (){
 			checkConnection();
@@ -57,7 +72,7 @@ $.mobile.allowCrossDomainPages = true;
 
 	function EnviarRecorrido() {
 		if (recorridoIndex<=cantRecorrido) {
-
+			progressbar1.setValue(recorridoIndex/cantRecorrido*100);
 			$.ajax({
                 type: "POST",
                 url: "http://190.220.216.249/wstracking/WebService1.asmx/insertData",
@@ -74,6 +89,7 @@ $.mobile.allowCrossDomainPages = true;
 			recorridoIndex = recorridoIndex +1;
 		}else{
 			MyTimer =null;
+			recorridoIndex=0;
 		}
 	}
 	
@@ -115,9 +131,10 @@ $.mobile.allowCrossDomainPages = true;
 			dataType: "xml",
 			success: parseXml
 			});
-			
+		
+        
+
 		$("#btnSend").click(function (){
-			alert("ccc");
 			MyTimer = setInterval(function () { EnviarRecorrido(); }, 5000);
 		})
 	});
@@ -201,6 +218,8 @@ $.mobile.allowCrossDomainPages = true;
 		<ol data-role="listview" id="resultXMLlist">
 		</ol>	
         <a  href="" data-role="button" id="btnSend">Enviar</a>
+
+        <div id="progressbar"></div>
         <div id="result"></div>
 	</div>
 
