@@ -7,11 +7,15 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link rel="stylesheet" href="css/jquery.mobile-1.3.0.min.css" />
+<link rel="stylesheet" href="css/jquery.mobile.structure-1.0.min.css" />
+<link rel="stylesheet" href="css/jquery.mobile.theme-1.0.min.css" />
 <link rel="stylesheet" type="text/css" href="css/tolito-1.0.2.min.css" />
+
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.mobile-1.3.0.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/cordova-2.5.0.js"></script>
 <script type="text/javascript" src="js/tolito-1.0.2.min.js"></script>
+
 <script type="text/javascript" charset="utf-8">
 
     // Wait for Cordova to load
@@ -87,7 +91,9 @@
 					if (sec==25) $('#result').fadeOut("slow");
 			}, 1000);
 			//actualizar barra de progreso
-			progressbar1.setValue(recorridoIndex/cantRecorrido*100);
+			progressbar1.setValue(recorridoIndex+1/cantRecorrido*100);
+
+			//web service para insertar recorrido
 			$.ajax({
                 type: "POST",
                 url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/insertData",
@@ -95,7 +101,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
 				success: function(data) {
-					$('#result').html(data.d);
+					//$('#result').html(data.d);
 				},
                 error: function (msg) {
                     $('#result').html(msg.statusText);
@@ -242,16 +248,11 @@
 
     	<a href="" data-role="button" id="btnpos">pos</a>
         <a href="" data-role="button" id="btnchecknetwork">Chequear Red</a>
-        <a href="#resultXML" data-role="button" id="btnreadXML">Leer XML</a>
-
-
-		<ul data-role="listview">
-			<li><a href="#page2">Simular Recorrido</a></li>
-            <li><a href="#page3">Enviar Panico</a></li>
-		</ul>		
+        <a href="#resultXML" data-role="button" id="btnreadXML">Simular recorrido</a>
+	
 	</div>
-	<div data-role="footer">
-		<h4>Desarrollado por Daniel Alvarez</h4>
+	<div data-role="footer" position="fixed">
+		<h5>Desarrollado por Daniel Alvarez</h5>
 	</div>
 </div>
 
@@ -278,16 +279,16 @@
 
 <div data-role="page" id="resultXML">
 	<div data-role="header">
-		<h1>Contenido XML</h1>
+		<h1>Simular recorrido</h1>
 	</div>
 	<div data-role="content">	
     	<div data-role="fieldcontain" id="groupfield">
-			<label for="idequipoSelect">Seleccione un movil: </label>
+			<label for="idequipoSelect">Seleccione un móvil: </label>
 			<select id="idequipoSelect" name="idequipoSelect"></select>
         	<a  href="" data-role="button" id="btnSend">Enviar datos de recorrido.</a>
         </div>
 		<div id="countDown" style="display: none;">
-			Se enviará una nueva posición dentro de <span>30</span> seg.
+			Se enviará una nueva posición en <span>30</span> seg.
 		</div>
 		<a  href="" data-role="button" id="btnCancelar"  style="display: none;">Cancelar</a>
         <div id="progressbar"></div>
