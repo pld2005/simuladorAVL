@@ -138,8 +138,8 @@
 		success: function (data) {
 			var optionlist="";
 			var movil = data.d;
-            $.each(movil, function (index, product) {
-				optionlist += '<option value=' + movil.IdEquipo + '>' + movil.Patente + '</option>'; 
+            $.each(movil, function (index, m) {
+				optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
             });
             $("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
             $('#result').html(optionlist);   

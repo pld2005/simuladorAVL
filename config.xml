@@ -20,5 +20,7 @@
 
 	<access origin="*" />
 	
-	
+	<gap:platform>
+        <gap:platform name="android" minVersion="2.3"/>
+    </gat:platform>
 </widget>
