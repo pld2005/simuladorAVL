@@ -76,7 +76,7 @@
 			$.ajax({
                 type: "POST",
                 url: "http://190.220.216.249/wstracking/WebService1.asmx/insertData",
-                data: recorridoArray[recorridoIndex],
+                data: "{movilid:6033,lat:'" + recorridoArray[recorridoIndex].lat + "',lng:'" + recorridoArray[recorridoIndex].lng + "',vel:0,rum:0,evento:0,panico:0,fueradeservicio:0,input3:0,input4:0,ocupado:0,input6:0,sms:0,contacto:0,conf:'conf'}",//data: recorridoArray[recorridoIndex],
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
 				success: function(data) {
