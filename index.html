@@ -75,8 +75,8 @@
 			progressbar1.setValue(recorridoIndex/cantRecorrido*100);
 			$.ajax({
                 type: "POST",
-                url: "http://190.220.216.249/wstracking/WebService1.asmx/insertData",
-                data: "{movilid:6033,lat:'" + recorridoArray[recorridoIndex].lat + "',lng:'" + recorridoArray[recorridoIndex].lng + "',vel:0,rum:0,evento:0,panico:0,fueradeservicio:0,input3:0,input4:0,ocupado:0,input6:0,sms:0,contacto:0,conf:'conf'}",//data: recorridoArray[recorridoIndex],
+                url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/insertData",
+                data: "{movilid:" + $("#idequipoSelect").val() + ",lat:'" + recorridoArray[recorridoIndex].lat + "',lng:'" + recorridoArray[recorridoIndex].lng + "',vel:0,rum:0,evento:0,panico:0,fueradeservicio:0,input3:0,input4:0,ocupado:0,input6:0,sms:0,contacto:0,conf:'conf'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
 				success: function(data) {
@@ -87,10 +87,10 @@
                 }
             });
 			recorridoIndex = recorridoIndex +1;
-			$('#result').html("Envio completado!");
-			$("progressbar").fadeOut();
-
+			$('#result').html("Simulando delay de AVL. Espere por favor...");
 		}else{
+			$('#result').html("Envio completado!" + recorridoIndex);
+			$("progressbar").fadeOut();
 			MyTimer =null;
 		}
 	}
@@ -127,6 +127,39 @@
 
 //se ejecuta cuando se inicia la pagina indicada
 	$(document).on('pageinit', '#resultXML',  function(){
+		//leer moviles de la demo
+		$.ajax({
+		type: "POST",
+		url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/GetMoviles",
+		data: "{ idpropietario: 33}",
+		contentType: "application/json; charset=utf-8",
+		datatype: "json",
+		datafields: [
+			{ name: 'IdEquipo' },
+			{ name: 'fechahora' },
+			{ name: 'Patente' },
+			{ name: 'lat' },
+			{ name: 'lng' },
+			{ name: 'vel' },
+			{ name: 'cur' }
+		],
+		id: 'IdEquipo',
+		async: false,
+		cache: false,
+		success: function (data) {
+			var movil = data.d;
+            $.each(movil, function (index, product) {
+				optionlist += '<option value=' + movil.IdEquipo + '>' + movil.Patente + '</option>'; 
+            });
+            $("#idequipoSelect").html(optionlist).selectmenu('refresh', true);    
+		},
+		error: function (err) {
+			alert('Error');
+		}
+	});
+
+
+		//leer xml con recorrido
 		$.ajax({
 			type: "GET",
 			url: "reportes.xml",
@@ -135,10 +168,10 @@
 			});
 		
         
-
+		//set timer para enviar recorrido cada 30 segundos
 		$("#btnSend").click(function (){
 			recorridoIndex=0;
-			MyTimer = setInterval(function () { EnviarRecorrido(); }, 5000);
+			MyTimer = setInterval(function () { EnviarRecorrido(); }, 30000);
 		})
 	});
 	
@@ -173,10 +206,14 @@
 		<h1>Simulador AVL</h1>
 	</div>
 	<div data-role="content">	
-    
+    	<label for="ip">IP:</label>
+    	<input type="text" name="ip" id="ip" value="190.220.216.249"  />
+
     	<a href="" data-role="button" id="btnpos">pos</a>
         <a href="" data-role="button" id="btnchecknetwork">Chequear Red</a>
         <a href="#resultXML" data-role="button" id="btnreadXML">Leer XML</a>
+
+
 		<ul data-role="listview">
 			<li><a href="#page2">Simular Recorrido</a></li>
             <li><a href="#page3">Enviar Panico</a></li>
@@ -190,10 +227,6 @@
 <div data-role="page" id="page2">
 	<div data-role="header">
 		<h1>Simular Recorrido</h1>
-	</div>
-	<div data-role="content">	
-		<label for="idequipo">ID Equipo:</label>
-    	<input type="text" name="idequipo" id="idequipo" value="6033"  />	
 	</div>
 	<div data-role="footer">
 		<h5>Desarrollado por Daniel Alvarez</h5>
@@ -218,8 +251,8 @@
 	</div>
 	<div data-role="content">	
     
-		<!--ol data-role="listview" id="resultXMLlist">
-		</ol-->	
+		<label for="idequipoSelect">Seleccione un movil: </label>
+		<select id="idequipoSelect" name="idequipoSelect"></select>
         <a  href="" data-role="button" id="btnSend">Enviar datos de recorrido.</a>
 
         <div id="progressbar"></div>
