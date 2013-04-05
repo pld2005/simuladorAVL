@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reportes>
+	<reporte>
+		<id>1</id>
+		<lat>-32.233365</lat>
+		<lng>-68.23659</lng>
+		<fechahora>01/09/2012 12:22:00</fechahora>
+		<vel>10</vel>
+		<cur>120</cur>
+		<estado>0</estado>
+	</reporte>
+	<reporte>
+		<id>2</id>
+		<lat>-32.123123123</lat>
+		<lng>-68.5463453</lng>
+		<fechahora>01/09/2012 12:23:00</fechahora>
+		<vel>10</vel>
+		<cur>120</cur>
+		<estado>0</estado>
+	</reporte>
+	<reporte>
+		<id>3</id>
+		<lat>-32.1231243</lat>
+		<lng>-68.87898</lng>
+		<fechahora>01/09/2012 12:24:00</fechahora>
+		<vel>10</vel>
+		<cur>120</cur>
+		<estado>0</estado>
+	</reporte>
+	<reporte>
+		<id>4</id>
+		<lat>-32.9998908</lat>
+		<lng>-68.5555576</lng>
+		<fechahora>01/09/2012 12:25:00</fechahora>
+		<vel>10</vel>
+		<cur>120</cur>
+		<estado>0</estado>
+	</reporte>
+</reportes> 
