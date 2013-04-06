@@ -45,6 +45,9 @@
             .logOptions()
             .build();
 
+	var mobileDemo = { 'center': '-32.890615,-68.8484', 'zoom': 10 };
+
+	var watchID = null;
 
     document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -153,7 +156,7 @@
 	
 	
 //////////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina PRINCIPAL 
-	$(document).on('pageshow', '#page',  function(){
+	$(document).on('pageinit', '#page',  function(){
 		//leer moviles de la demo
 		$.ajax({
 			type: "POST",
@@ -167,23 +170,23 @@
 	            $.each(movil, function (index, m) {
 					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
 	            });
-	            $("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
+	            //$("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
+	            alert(optionlist);
 			},
 			error: function (err) {
-				alert('Error');
+				alert("ERR: " + err);
 			}
 		});
 	});
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	var mobileDemo = { 'center': '-32.890615,-68.8484', 'zoom': 10 };
-
-	var watchID = null;
 
 	$(document).on('pageinit', '#posActual',  function(){
+		
+
+		//boton enviar posicion actual
 		$("#btnEnviarPosActual").click(function (){
 			$("#map_canvas_2").fadeOut("slow", function(){
-				$("#map_canvas_2").fadeIn("slow", function() {
-				
+				$("#map_canvas_2").fadeIn("slow", function() {				
 				});
 			});
 			navigator.geolocation.getCurrentPosition(function(position) {
@@ -194,27 +197,26 @@
 			
 		})
 
-
-
-//			$.mobile.loading( 'show', { theme: "b", text: "Cargando", textonly: false });
-		$('#map_canvas_2').gmap({'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI':true, 'callback': function(map) {
-		var self = this;
-		var options = { timeout: 30000 };
-        watchID = navigator.geolocation.watchPosition(function(position) {
-        	var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        	if ( !self.get('markers').client ) {
-				self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
-			} else {
-				self.get('markers').client.setPosition(latlng);
-				map.panTo(latlng);
+		$('#map_canvas_2').gmap({
+			'center': mobileDemo.center, 
+			'zoom': mobileDemo.zoom, 
+			'disableDefaultUI':true, 
+			'callback': function(map) {
+				var self = this;
+				var options = { timeout: 30000 };
+        		watchID = navigator.geolocation.watchPosition(function(position) {
+        			var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		        	if (!self.get('markers').client) {
+						self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
+					} else {
+						self.get('markers').client.setPosition(latlng);
+						map.panTo(latlng);
+					}
+        		}, function(error){
+        			alert(error.message);
+        		}, options);
 			}
-        }, function(error){
-        	alert(error.message);
-        }, options);
-
-			
-		}});
-//			$.mobile.loading( 'hide');
+		});
 	});
 	
 	$(document).on('pageshow', '#posActual',  function(){
@@ -238,8 +240,11 @@
 			type: "GET",
 			url: "reportes.xml",
 			dataType: "xml",
-			success: parseXml
-			});
+			success: parseXml,
+			error: function(err){
+				alert("ERR: " + err);
+			}
+		});
 		
         
 		//set timer para enviar recorrido cada 30 segundos
@@ -269,7 +274,6 @@
 			sec=30;
 			MyTimer =null;
 		});});
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	function parseXml(xml) {
 		$(xml).find('reporte').each(function() {
@@ -284,6 +288,8 @@
 			recorridoArray.push(r);
 			cantRecorrido = cantRecorrido + 1;
 		});}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     </script>
 </head> 
@@ -295,10 +301,10 @@
 	</div>
 	<div data-role="content">	
 		<div id="controles">
-	    	<div data-role="fieldcontain" id="groupfield0">
-	    		<label for="ip">IP:</label>
+	    	
+	    		<label for="ip">IP server:</label>
 	    		<input type="text" name="ip" id="ip" value="190.220.216.249"  />
-	    	</div>
+	    	
 			<div data-role="fieldcontain" id="groupfield1">
 				<label for="idequipoSelect">Seleccione un móvil: </label>
 				<select id="idequipoSelect" name="idequipoSelect"></select>
