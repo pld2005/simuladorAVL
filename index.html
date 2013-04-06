@@ -18,9 +18,8 @@
 <script type="text/javascript" src="js/tolito-1.0.2.min.js"></script>
 
 <script src="ui/min/jquery.ui.map.full.min.js" type="text/javascript"></script>
- <script type="text/javascript" src="ui/min/jquery.ui.map.min.js"></script>
- <script type="text/javascript" src="ui/min/jquery.ui.map.services.min.js"></script>
-
+<script type="text/javascript" src="ui/min/jquery.ui.map.min.js"></script>
+<script type="text/javascript" src="ui/min/jquery.ui.map.services.min.js"></script>
 <script type="text/javascript" charset="utf-8">
 
     // Wait for Cordova to load
@@ -167,14 +166,28 @@
         states[Connection.CELL_4G]  = 'Cell 4G connection';
         states[Connection.NONE]     = 'No network connection';
 
-		var text = "Tipo de conexion: " + states[networkState];
-		$("#msjpopup").html(text);
-		$.mobile.changePage('#popupBasic', {transition: 'fade', role: 'dialog'}); 
-        
+		return states[networkState];
+		        
     }
 
 //////////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina PRINCIPAL 
-	$(document).on('pageinit', '#page',  function(){
+	$(document).on('pageshow', '#page',  function(){
+
+		var inet = checkConnection();
+		if (inet!='No network connection') {
+			$("#groupfield0").addClass("ui-disabled");
+			$("#groupfield1").addClass("ui-disabled");
+			$("#btnreadXML").addClass("ui-disabled");
+			$("#btnpos").addClass("ui-disabled");
+		}else{
+			$("#groupfield0").removeClass("ui-disabled");
+			$("#groupfield1").removeClass("ui-disabled");
+			$("#btnreadXML").removeClass("ui-disabled");
+			$("#btnpos").removeClass("ui-disabled");
+		}
+
+
+
 		//leer moviles de la demo
 		$.ajax({
 			type: "POST",
@@ -244,6 +257,10 @@
 			
 			$(document).on('pagehide', '#posActual',  function(){
 					$('#map_canvas_2').gmap('clearWatch'); 
+					if (watchID != null) {
+			            navigator.geolocation.clearWatch(watchID);
+			            watchID = null;
+			        }
 			});
 			
 
@@ -329,18 +346,20 @@
 		<h1>Simulador AVL</h1>
 	</div>
 	<div data-role="content">	
-    	<div data-role="fieldcontain" id="groupfield0">
-    			<label for="ip">IP:</label>
-    		<input type="text" name="ip" id="ip" value="190.220.216.249"  />
-    	</div>
-		<div data-role="fieldcontain" id="groupfield1">
-			<label for="idequipoSelect">Seleccione un móvil: </label>
-			<select id="idequipoSelect" name="idequipoSelect"></select>
-        </div>
-    	<a href="#posActual" data-role="button" id="btnpos">Enviar posición actual.</a>
-        <a href="" data-role="button" id="btnchecknetwork">Chequear Red</a>
-        <a href="#resultXML" data-role="button" id="btnreadXML">Simular recorrido</a>
-	
+		<div id="controles">
+	    	<div data-role="fieldcontain" id="groupfield0">
+	    		<label for="ip">IP:</label>
+	    		<input type="text" name="ip" id="ip" value="190.220.216.249"  />
+	    	</div>
+			<div data-role="fieldcontain" id="groupfield1">
+				<label for="idequipoSelect">Seleccione un móvil: </label>
+				<select id="idequipoSelect" name="idequipoSelect"></select>
+	        </div>
+	    	<a href="#posActual" data-role="button" id="btnpos">Posición actual.</a>
+	        
+	        <a href="#resultXML" data-role="button" id="btnreadXML">Simular recorrido</a>
+	    </div>
+		<a href="" data-role="button" id="btnchecknetwork" data-icon="refresh" data-theme="b">Refresh</a>
 	</div>
 	<div data-role="footer" position="fixed">
 		<h5>Desarrollado por Daniel Alvarez</h5>
