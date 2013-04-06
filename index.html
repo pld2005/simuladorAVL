@@ -196,7 +196,7 @@
 		});
 	});
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			var mobileDemo = { 'center': '-32.890615,-68.8484', 'zoom': 14 };
+			var mobileDemo = { 'center': '-32.890615,-68.8484', 'zoom': 10 };
 
 		var watchID = null;
 
@@ -213,7 +213,7 @@
 				self.get('markers').client.setPosition(latlng);
 				map.panTo(latlng);
 			}
-        }, funtion(error){
+        }, function(error){
         	alert(error.message);
         }, options);
 
