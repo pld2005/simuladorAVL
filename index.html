@@ -204,8 +204,7 @@
 
 ////////////////////////////////////////////////////////////
 							var mobileDemo = { 'center': '57.7973333,12.0502107', 'zoom': 10 };
-
-			$('#posActual').on('pageinit', function() {
+			$(document).on('pageinit', '#posActual',  function(){
 				demo.add('posActual', function() {
 					$('#map_canvas_2').gmap({'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI':true, 'callback': function(map) {
 						var self = this;
@@ -224,11 +223,11 @@
 				}).load('posActual');
 			});
 			
-			$('#posActual').on('pageshow', function() {
+			$(document).on('pageshow', '#posActual',  function(){
 				demo.add('posActual', function() { $('#map_canvas_2').gmap('refresh'); }).load('posActual');
 			});
 			
-			$('#posActual').on("pagehide", function() {
+			$(document).on('pagehide', '#posActual',  function(){
 				demo.add('posActual', function() { $('#map_canvas_2').gmap('clearWatch'); }).load('posActual');
 			});
 			
@@ -398,10 +397,6 @@ alert(status);
 
 </div>
 
-<div id="popupBasic" data-role="popup" data-overlay-theme="b" data-theme="a" class="ui-content">
-    <a href="#" data-rel="back" data-role="button" data-theme="e" data-icon="delete" data-iconpos="notext" class="ui-btn-left">Close</a>
-	<div id="msjpopup"  data-theme="e" ></div>
-</div>
 
 </body>
 
