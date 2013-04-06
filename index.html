@@ -32,6 +32,7 @@
 	var timer;
 	var latActual;
 	var lngActual;
+    var networkState = '';
 
 	var progressbar1 = TolitoProgressBar('progressbar')
             .setOuterTheme('b')
@@ -52,13 +53,16 @@
     function onDeviceReady() {
 		$.mobile.allowCrossDomainPages = true;
 
-		$("#btnchecknetwork").click(function (){
-			checkConnection();
-		})
-		
-		$("#btnpos").click(function (){
-			obtenerPocision();
-		})
+        networkState = navigator.connection.type;
+
+        /*var states = {};
+        states[Connection.UNKNOWN]  = 'Unknown connection';
+        states[Connection.ETHERNET] = 'Ethernet connection';
+        states[Connection.WIFI]     = 'WiFi connection';
+        states[Connection.CELL_2G]  = 'Cell 2G connection';
+        states[Connection.CELL_3G]  = 'Cell 3G connection';
+        states[Connection.CELL_4G]  = 'Cell 4G connection';
+        states[Connection.NONE]     = 'No network connection';*/
 		
 
     }
@@ -150,44 +154,11 @@
 		}
 	}
 	
-	function obtenerPocision() {
-		
-			
-	}
-    function checkConnection() {
-        var networkState = navigator.connection.type;
-
-        var states = {};
-        states[Connection.UNKNOWN]  = 'Unknown connection';
-        states[Connection.ETHERNET] = 'Ethernet connection';
-        states[Connection.WIFI]     = 'WiFi connection';
-        states[Connection.CELL_2G]  = 'Cell 2G connection';
-        states[Connection.CELL_3G]  = 'Cell 3G connection';
-        states[Connection.CELL_4G]  = 'Cell 4G connection';
-        states[Connection.NONE]     = 'No network connection';
-
-		return states[networkState];
-		        
-    }
-
+	
 //////////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina PRINCIPAL 
 	$(document).on('pageinit', '#page',  function(){
 
-		//var inet = checkConnection();
-/*		if (inet!='No network connection') {
-			$("#groupfield0").addClass("ui-disabled");
-			$("#groupfield1").addClass("ui-disabled");
-			$("#btnreadXML").addClass("ui-disabled");
-			$("#btnpos").addClass("ui-disabled");
-		}else{
-			$("#groupfield0").removeClass("ui-disabled");
-			$("#groupfield1").removeClass("ui-disabled");
-			$("#btnreadXML").removeClass("ui-disabled");
-			$("#btnpos").removeClass("ui-disabled");
-		}*/
-
-
-
+		alert(networkState);
 		//leer moviles de la demo
 		$.ajax({
 			type: "POST",
