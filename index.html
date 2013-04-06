@@ -53,7 +53,7 @@
     function onDeviceReady() {
 		$.mobile.allowCrossDomainPages = true;
 
-        networkState = navigator.connection.type;
+        //networkState = navigator.connection.type;
 
         /*var states = {};
         states[Connection.UNKNOWN]  = 'Unknown connection';
@@ -102,9 +102,6 @@
 			function() {
 				$("#result").html("Error GPS!");
 			});
-
-			
-
 	}
 
 	function Enviar(lat, lng) {
@@ -156,9 +153,7 @@
 	
 	
 //////////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina PRINCIPAL 
-	$(document).on('pageinit', '#page',  function(){
-
-		alert(networkState);
+	$(document).on('pageshow', '#page',  function(){
 		//leer moviles de la demo
 		$.ajax({
 			type: "POST",
@@ -180,65 +175,60 @@
 		});
 	});
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			var mobileDemo = { 'center': '-32.890615,-68.8484', 'zoom': 10 };
+	var mobileDemo = { 'center': '-32.890615,-68.8484', 'zoom': 10 };
 
-			var watchID = null;
+	var watchID = null;
 
-			$(document).on('pageinit', '#posActual',  function(){
-					$("#btnEnviarPosActual").click(function (){
-						$("#map_canvas_2").fadeOut("slow", function(){
-							$("#map_canvas_2").fadeIn("slow", function() {
-							
-							});
-						});
-						navigator.geolocation.getCurrentPosition(function(position) {
-							Enviar(position.coords.latitude, position.coords.longitude);
-						},function(error){
-			        		alert(error.message);
-			        	});
-						
-					})
-
-
-
-					$.mobile.loading( 'show', { theme: "b", text: "Cargando", textonly: false });
-					$('#map_canvas_2').gmap({'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI':true, 'callback': function(map) {
-					var self = this;
-					var options = { timeout: 30000 };
-			        watchID = navigator.geolocation.watchPosition(function(position) {
-			        	var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-			        	if ( !self.get('markers').client ) {
-							self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
-						} else {
-							self.get('markers').client.setPosition(latlng);
-							map.panTo(latlng);
-						}
-			        }, function(error){
-			        	alert(error.message);
-			        }, options);
-
-						
-					}});
-					$.mobile.loading( 'hide');
+	$(document).on('pageinit', '#posActual',  function(){
+		$("#btnEnviarPosActual").click(function (){
+			$("#map_canvas_2").fadeOut("slow", function(){
+				$("#map_canvas_2").fadeIn("slow", function() {
+				
+				});
 			});
+			navigator.geolocation.getCurrentPosition(function(position) {
+				Enviar(position.coords.latitude, position.coords.longitude);
+			},function(error){
+        		alert(error.message);
+        	});
 			
-			$(document).on('pageshow', '#posActual',  function(){
-				 $('#map_canvas_2').gmap('refresh');
-			});
-			
-			$(document).on('pagehide', '#posActual',  function(){
-					$('#map_canvas_2').gmap('clearWatch'); 
-					if (watchID != null) {
-			            navigator.geolocation.clearWatch(watchID);
-			            watchID = null;
-			        }
-			});
-			
+		})
 
 
+
+//			$.mobile.loading( 'show', { theme: "b", text: "Cargando", textonly: false });
+		$('#map_canvas_2').gmap({'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI':true, 'callback': function(map) {
+		var self = this;
+		var options = { timeout: 30000 };
+        watchID = navigator.geolocation.watchPosition(function(position) {
+        	var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        	if ( !self.get('markers').client ) {
+				self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
+			} else {
+				self.get('markers').client.setPosition(latlng);
+				map.panTo(latlng);
+			}
+        }, function(error){
+        	alert(error.message);
+        }, options);
+
+			
+		}});
+//			$.mobile.loading( 'hide');
+	});
+	
+	$(document).on('pageshow', '#posActual',  function(){
+		 $('#map_canvas_2').gmap('refresh');
+	});
+	
+	$(document).on('pagehide', '#posActual',  function(){
+		$('#map_canvas_2').gmap('clearWatch'); 
+		if (watchID != null) {
+            navigator.geolocation.clearWatch(watchID);
+            watchID = null;
+        }
+	});
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 ///////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina ENVIAR RECORRIDO 
 	$(document).on('pageinit', '#resultXML',  function(){
@@ -255,10 +245,7 @@
 		//set timer para enviar recorrido cada 30 segundos
 		$("#btnSend").click(function (){
 			recorridoIndex=0;
-			//$('#result').html("Simulando delay de AVL. Espere por favor...");
 			$('#groupfield').fadeOut('fast');
-			//$('#idequipoSelect').parent().hide();
-			//$('#btnSend').fadeOut('fast');
 			$('#btnCancelar').fadeIn('fast');
 
 			EnviarRecorrido();
@@ -268,7 +255,6 @@
 		})
 
 		$("#btnCancelar").click(function (){
-			//$('#idequipoSelect').parent().show();
 			$('#result').html("Envio cancelado!");
 			$('#countDown span').text(30);
 			$("progressbar").fadeOut();
@@ -282,12 +268,10 @@
 			timer=null;
 			sec=30;
 			MyTimer =null;
-		});
-	});
+		});});
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	function parseXml(xml) {
-		
 		$(xml).find('reporte').each(function() {
 			var r = Recorrido(6033, 
 							  $(this).find("lat").text(), 
@@ -298,16 +282,9 @@
 							  0, 0, 0, 0, 0, 0, 0, 0,"");
 			
 			recorridoArray.push(r);
-			
-	
 			cantRecorrido = cantRecorrido + 1;
-			//$("#resultXMLlist").append('<li>Lat:' + $(this).find("lat").text() + ' / Lng:' + $(this).find("lng").text() + '</li>').listview('refresh');
-			
-		});
-		
-	}
-	
-	
+		});}
+    
     </script>
 </head> 
 <body> 
