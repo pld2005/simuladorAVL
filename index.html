@@ -198,36 +198,42 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			var mobileDemo = { 'center': '-32.890615,-68.8484', 'zoom': 10 };
 
-		var watchID = null;
+			var watchID = null;
 
 			$(document).on('pageinit', '#posActual',  function(){
+					$("#btnEnviarPosActual").click(function (){
+						$("#map_canvas_2").fadeOut("slow", function(){
+							$("#map_canvas_2").fadeIn("slow", function() {
+							
+							});
+						});
+						navigator.geolocation.getCurrentPosition(function(position) {
+							Enviar(position.coords.latitude, position.coords.longitude);
+						},function(error){
+			        		alert(error.message);
+			        	});
+						
+					})
+
+
+
 					$.mobile.loading( 'show', { theme: "b", text: "Cargando", textonly: false });
 					$('#map_canvas_2').gmap({'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI':true, 'callback': function(map) {
-						var self = this;
-		var options = { timeout: 30000 };
-        watchID = navigator.geolocation.watchPosition(function(position) {
-        	var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        	if ( !self.get('markers').client ) {
-				self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
-			} else {
-				self.get('markers').client.setPosition(latlng);
-				map.panTo(latlng);
-			}
-        }, function(error){
-        	alert(error.message);
-        }, options);
+					var self = this;
+					var options = { timeout: 30000 };
+			        watchID = navigator.geolocation.watchPosition(function(position) {
+			        	var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+			        	if ( !self.get('markers').client ) {
+							self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
+						} else {
+							self.get('markers').client.setPosition(latlng);
+							map.panTo(latlng);
+						}
+			        }, function(error){
+			        	alert(error.message);
+			        }, options);
 
-						/*self.watchPosition(function(position, status) {
-							if ( status === 'OK' ) {
-								var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-								if ( !self.get('markers').client ) {
-									self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
-								} else {
-									self.get('markers').client.setPosition(latlng);
-									map.panTo(latlng);
-								}
-							}
-						});*/
+						
 					}});
 					$.mobile.loading( 'hide');
 			});
@@ -343,7 +349,7 @@
 
 <div data-role="page" id="posActual">
 	<div data-role="header">
-		<h1>Enviar posición actual</h1>
+		<h1>Posición actual</h1>
 	</div>
 	<div data-role="content">
 		<div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
