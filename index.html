@@ -34,6 +34,14 @@
 	var lngActual;
     var networkState = '';
 	var optionlist=""; //usada para cargar los moviles en el combo
+	var states = {};
+        states[Connection.UNKNOWN]  = 'Unknown connection';
+        states[Connection.ETHERNET] = 'Ethernet connection';
+        states[Connection.WIFI]     = 'WiFi connection';
+        states[Connection.CELL_2G]  = 'Cell 2G connection';
+        states[Connection.CELL_3G]  = 'Cell 3G connection';
+        states[Connection.CELL_4G]  = 'Cell 4G connection';
+        states[Connection.NONE]     = 'No network connection';
 
 	var progressbar1 = TolitoProgressBar('progressbar')
             .setOuterTheme('b')
@@ -57,17 +65,7 @@
     function onDeviceReady() {
 		$.mobile.allowCrossDomainPages = true;
 
-        //networkState = navigator.connection.type;
-
-        /*var states = {};
-        states[Connection.UNKNOWN]  = 'Unknown connection';
-        states[Connection.ETHERNET] = 'Ethernet connection';
-        states[Connection.WIFI]     = 'WiFi connection';
-        states[Connection.CELL_2G]  = 'Cell 2G connection';
-        states[Connection.CELL_3G]  = 'Cell 3G connection';
-        states[Connection.CELL_4G]  = 'Cell 4G connection';
-        states[Connection.NONE]     = 'No network connection';*/
-		
+        
 
     }
 
@@ -165,7 +163,11 @@
 
 		}else{
 			//no se pudo conectar, mostrar pagina inicial con texto de ip y boton de conectar
-			$("#msj").html("Error: no se pudo conectar al servidor.");
+			networkState = navigator.connection.type;
+
+    		//$("#msj").html(states[networkState]);   
+		
+			//$("#msj").html("Error: no se pudo conectar al servidor.");
 		}
 
 		$("#btnconectar").click(function() {
