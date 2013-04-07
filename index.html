@@ -170,11 +170,11 @@
 	            $.each(movil, function (index, m) {
 					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
 	            });
-	            //$("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
-	            alert(optionlist);
+	            $("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
+	            //alert(optionlist);
 			},
 			error: function (err) {
-				alert("ERR: " + err.message);
+				alert("Error: No se puede conectar al servidor. Revise la IP.);
 			}
 		});
 	});
