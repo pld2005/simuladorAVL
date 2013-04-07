@@ -20,6 +20,8 @@
 <script src="ui/min/jquery.ui.map.full.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="ui/min/jquery.ui.map.min.js"></script>
 <script type="text/javascript" src="ui/min/jquery.ui.map.services.min.js"></script>
+
+<script src="http://debug.phonegap.com/target/target-script-min.js#r4nd0m"></script>
 <script type="text/javascript" charset="utf-8">
 
     // Wait for Cordova to load
@@ -57,10 +59,7 @@
     //
     function onDeviceReady() {
 		$.mobile.allowCrossDomainPages = true;
-
-        
-
-    }
+	}
 
 
 
@@ -149,20 +148,6 @@
 	
 //////////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina PRINCIPAL 
 	$(document).on('pageinit', '#page',  function(){
-			//no se pudo conectar, mostrar pagina inicial con texto de ip y boton de conectar
-			/*networkState = navigator.connection.type;
-			states[Connection.UNKNOWN]  = 'Unknown connection';
-	        states[Connection.ETHERNET] = 'Ethernet connection';
-	        states[Connection.WIFI]     = 'WiFi connection';
-	        states[Connection.CELL_2G]  = 'Cell 2G connection';
-	        states[Connection.CELL_3G]  = 'Cell 3G connection';
-	        states[Connection.CELL_4G]  = 'Cell 4G connection';
-	        states[Connection.NONE]     = 'No network connection';
-
-    		$("#msj").html(states[networkState]);   */
-		
-			//$("#msj").html("Error: no se pudo conectar al servidor.");
-//		}
 
 		$("#btnconectar").click(function() {
 			Conectar();
@@ -187,7 +172,7 @@
 	            result= "OK";
 			},
 			error: function (err) {
-				result= "ERROR";
+				alert(err.message);
 			}
 		});
 		//alert(result);
