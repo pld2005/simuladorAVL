@@ -21,7 +21,7 @@
 <script type="text/javascript" src="ui/min/jquery.ui.map.min.js"></script>
 <script type="text/javascript" src="ui/min/jquery.ui.map.services.min.js"></script>
 
-<script src="http://debug.phonegap.com/target/target-script-min.js#r4nd0m"></script>
+<script src="http://debug.phonegap.com/target/target-script-min.js#simuladorAVL"></script>
 <script type="text/javascript" charset="utf-8">
 
     // Wait for Cordova to load
@@ -58,6 +58,7 @@
     // Cordova is loaded and it is now safe to make calls Cordova methods
     //
     function onDeviceReady() {
+    	$.support.cors = true;
 		$.mobile.allowCrossDomainPages = true;
 	}
 
