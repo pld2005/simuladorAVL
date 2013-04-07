@@ -33,6 +33,7 @@
 	var latActual;
 	var lngActual;
     var networkState = '';
+	var optionlist=""; //usada para cargar los moviles en el combo
 
 	var progressbar1 = TolitoProgressBar('progressbar')
             .setOuterTheme('b')
@@ -71,7 +72,37 @@
     }
 
 
+/* detect device */
+var ua = navigator.userAgent,
+    iphone = ~ua.indexOf('iPhone') || ~ua.indexOf('iPod'),
+    ipad = ~ua.indexOf('iPad'),
+    ios = iphone || ipad,
+    android = ~ua.indexOf('Android');
 
+
+$(document).delegate('#the_page', 'pageshow', function () {
+    var $page = $(this),
+        $target = $(this).find('.fullHeight'),
+        t_padding = parseInt($target.css('padding-top'))
+                    + parseInt($target.css('padding-bottom')),
+        w_height = (ios)? screen.height-65: $(window).height();     // "-65" is to compensate for url bar. Any better ideas?
+        headFootHeight = 0;
+
+    // Get total height for all headers and footers on page
+    $page.find('[data-role="footer"], [data-role="header"]').each(function() {
+        var myTotalHeight = $(this).height()
+                            + parseInt( $(this).css('padding-top') )
+                            + parseInt( $(this).css('padding-bottom') );
+        headFootHeight += myTotalHeight;
+    });
+
+    var the_height = (w_height - headFootHeight);           
+
+    $page
+     .height(w_height)
+     .find('.fullHeight')
+     .height(the_height - t_padding);
+}); 
 
 	function Recorrido(movilid, lat,lng,vel,rum,evento,panico,fueradeservicio,input3,input4,ocupado,input6,sms,contacto,conf){
 		return {
@@ -157,7 +188,25 @@
 	
 //////////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina PRINCIPAL 
 	$(document).on('pageinit', '#page',  function(){
+		var connectOk = Conectar();
+		if (connectOk=="OK"){
+			//carga pagina con botones
+			$.mobile.changePage("#main",{transition: "slideup"})
+
+		}else{
+			//no se pudo conectar, mostrar pagina inicial con texto de ip y boton de conectar
+			$("#msj").html("Error: no se pudo conectar al servidor.");
+		}
+
+		$("#btnconectar").click(function() {
+			Conectar();
+		});
+
+	});
+
+	function Conectar(){
 		//leer moviles de la demo
+		var result='Error'
 		$.ajax({
 			type: "POST",
 			url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/GetMoviles",
@@ -165,18 +214,24 @@
 			contentType: "application/json; charset=utf-8",
 			datatype: "json",
 			success: function (data) {
-				var optionlist="";
 				var movil = data.d;
 	            $.each(movil, function (index, m) {
 					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
 	            });
-	            $("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
-	            //alert(optionlist);
+	            result= "OK";
 			},
 			error: function (err) {
-				alert("Error: No se puede conectar al servidor. Revise la IP.);
+				result= "ERROR";
 			}
 		});
+		return result;
+
+	}
+
+	$(document).on('pageshow', '#main',  function(){
+		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
+		$("#iplabel span").text($("#ip").val());
+
 	});
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -195,7 +250,7 @@
         		alert(error.message);
         	});
 			
-		})
+		});
 
 		$('#map_canvas_2').gmap({
 			'center': mobileDemo.center, 
@@ -301,10 +356,27 @@
 	</div>
 	<div data-role="content">	
 		<div id="controles">
-	    	
+			<div data-role="fieldcontain" id="groupfield2">
 	    		<label for="ip">IP server:</label>
 	    		<input type="text" name="ip" id="ip" value="190.220.216.249"  />
+	        </div>
+	    </div>
+		<a href="" data-role="button" id="btnconectar" data-icon="refresh" data-theme="b">Conectar</a>
+		<div id="msj"></div>
+	</div>
+	<div data-role="footer" position="fixed">
+		<h5>Desarrollado por Daniel Alvarez</h5>
+	</div>
+</div>
+
+<div data-role="page" id="main">
+	<div data-role="header">
+		<h1>Simulador AVL</h1>
+	</div>
+	<div data-role="content">	
+		<div id="controles">
 	    	
+	    	<div id="iplabel">Conectado a: <i><span></span><i></div>
 			<div data-role="fieldcontain" id="groupfield1">
 				<label for="idequipoSelect">Seleccione un móvil: </label>
 				<select id="idequipoSelect" name="idequipoSelect"></select>
@@ -313,12 +385,13 @@
 	        
 	        <a href="#resultXML" data-role="button" id="btnreadXML">Simular recorrido</a>
 	    </div>
-		<!--a href="" data-role="button" id="btnchecknetwork" data-icon="refresh" data-theme="b">Refresh</a-->
+		
 	</div>
 	<div data-role="footer" position="fixed">
 		<h5>Desarrollado por Daniel Alvarez</h5>
 	</div>
 </div>
+
 
 <div data-role="page" id="posActual">
 	<div data-role="header">
