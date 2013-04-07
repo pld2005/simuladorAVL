@@ -149,12 +149,6 @@
 	
 //////////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina PRINCIPAL 
 	$(document).on('pageinit', '#page',  function(){
-		var connectOk = Conectar();
-		if (connectOk=="OK"){
-			//carga pagina con botones
-			$.mobile.changePage("#main",{transition: "slideup"})
-
-		}else{
 			//no se pudo conectar, mostrar pagina inicial con texto de ip y boton de conectar
 			/*networkState = navigator.connection.type;
 			states[Connection.UNKNOWN]  = 'Unknown connection';
@@ -168,7 +162,7 @@
     		$("#msj").html(states[networkState]);   */
 		
 			//$("#msj").html("Error: no se pudo conectar al servidor.");
-		}
+//		}
 
 		$("#btnconectar").click(function() {
 			Conectar();
@@ -197,7 +191,11 @@
 			}
 		});
 		//alert(result);
-		return result;
+		if (result=="OK"){
+			//carga pagina con botones
+			$.mobile.changePage("#main",{transition: "slideup"})
+
+		}else{
 
 	}
 
