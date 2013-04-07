@@ -196,7 +196,8 @@
 			$.mobile.changePage("#main",{transition: "slideup"})
 
 		}else{
-
+        	$("#msj").html("Error: no se pudo conectar al servidor.");
+        }
 	}
 
 	$(document).on('pageshow', '#main',  function(){
