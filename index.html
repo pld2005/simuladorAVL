@@ -156,7 +156,7 @@
 
 		}else{
 			//no se pudo conectar, mostrar pagina inicial con texto de ip y boton de conectar
-			networkState = navigator.connection.type;
+			/*networkState = navigator.connection.type;
 			states[Connection.UNKNOWN]  = 'Unknown connection';
 	        states[Connection.ETHERNET] = 'Ethernet connection';
 	        states[Connection.WIFI]     = 'WiFi connection';
@@ -165,7 +165,7 @@
 	        states[Connection.CELL_4G]  = 'Cell 4G connection';
 	        states[Connection.NONE]     = 'No network connection';
 
-    		$("#msj").html(states[networkState]);   
+    		$("#msj").html(states[networkState]);   */
 		
 			//$("#msj").html("Error: no se pudo conectar al servidor.");
 		}
@@ -196,7 +196,7 @@
 				result= "ERROR";
 			}
 		});
-		alert(result);
+		//alert(result);
 		return result;
 
 	}
