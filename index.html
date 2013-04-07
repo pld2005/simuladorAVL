@@ -6,9 +6,9 @@
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
-<link rel="stylesheet" href="css/jquery.mobile-1.3.0.min.css" />
-<link rel="stylesheet" href="css/jquery.mobile.structure-1.0.min.css" />
-<link rel="stylesheet" href="css/jquery.mobile.theme-1.0.min.css" />
+<link rel="stylesheet" href="css/jquery.mobile-1.3.0.css" />
+<!--link rel="stylesheet" href="css/jquery.mobile.structure-1.0.min.css" />
+<link rel="stylesheet" href="css/jquery.mobile.theme-1.0.min.css" /-->
 <link rel="stylesheet" type="text/css" href="css/tolito-1.0.2.min.css" />
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
@@ -72,37 +72,7 @@
     }
 
 
-/* detect device */
-var ua = navigator.userAgent,
-    iphone = ~ua.indexOf('iPhone') || ~ua.indexOf('iPod'),
-    ipad = ~ua.indexOf('iPad'),
-    ios = iphone || ipad,
-    android = ~ua.indexOf('Android');
 
-
-$(document).delegate('#the_page', 'pageshow', function () {
-    var $page = $(this),
-        $target = $(this).find('.fullHeight'),
-        t_padding = parseInt($target.css('padding-top'))
-                    + parseInt($target.css('padding-bottom')),
-        w_height = (ios)? screen.height-65: $(window).height();     // "-65" is to compensate for url bar. Any better ideas?
-        headFootHeight = 0;
-
-    // Get total height for all headers and footers on page
-    $page.find('[data-role="footer"], [data-role="header"]').each(function() {
-        var myTotalHeight = $(this).height()
-                            + parseInt( $(this).css('padding-top') )
-                            + parseInt( $(this).css('padding-bottom') );
-        headFootHeight += myTotalHeight;
-    });
-
-    var the_height = (w_height - headFootHeight);           
-
-    $page
-     .height(w_height)
-     .find('.fullHeight')
-     .height(the_height - t_padding);
-}); 
 
 	function Recorrido(movilid, lat,lng,vel,rum,evento,panico,fueradeservicio,input3,input4,ocupado,input6,sms,contacto,conf){
 		return {
@@ -351,7 +321,7 @@ $(document).delegate('#the_page', 'pageshow', function () {
 <body> 
 
 <div data-role="page" id="page">
-	<div data-role="header">
+	<div data-role="header" data-position="fixed">
 		<h1>Simulador AVL</h1>
 	</div>
 	<div data-role="content">	
@@ -364,7 +334,7 @@ $(document).delegate('#the_page', 'pageshow', function () {
 		<a href="" data-role="button" id="btnconectar" data-icon="refresh" data-theme="b">Conectar</a>
 		<div id="msj"></div>
 	</div>
-	<div data-role="footer" position="fixed">
+	<div data-role="footer"  data-position="fixed">
 		<h5>Desarrollado por Daniel Alvarez</h5>
 	</div>
 </div>
