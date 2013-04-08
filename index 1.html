@@ -1,0 +1,137 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>Simulador AVL</title>
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<link rel="stylesheet" href="css/jquery.mobile-1.3.0.css" />
+<!--link rel="stylesheet" href="css/jquery.mobile.structure-1.0.min.css" />
+<link rel="stylesheet" href="css/jquery.mobile.theme-1.0.min.css" /-->
+<link rel="stylesheet" type="text/css" href="css/tolito-1.0.2.min.css" />
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.3.0.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/cordova-2.5.0.js"></script>
+<script type="text/javascript" src="js/tolito-1.0.2.min.js"></script>
+
+<script src="ui/min/jquery.ui.map.full.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="ui/min/jquery.ui.map.min.js"></script>
+<script type="text/javascript" src="ui/min/jquery.ui.map.services.min.js"></script>
+
+<script src="http://debug.phonegap.com/target/target-script-min.js#simuladorAVL"></script>
+<script type="text/javascript" charset="utf-8">
+
+    // Wait for Cordova to load
+    // 
+	var recorridoArray = [];
+	var cantRecorrido = 0;
+	var recorridoIndex = 0;
+	var MyTimer;
+	var sec = 30;
+	var timer;
+	var latActual;
+	var lngActual;
+    var networkState = '';
+	var optionlist=""; //usada para cargar los moviles en el combo
+	var states = {};
+        
+	var progressbar1 = TolitoProgressBar('progressbar')
+            .setOuterTheme('b')
+            .setInnerTheme('e')
+            .isMini(true)
+            .setMax(100)
+            .setStartFrom(0)
+            .setInterval(10)
+            .showCounter(true)
+            .logOptions()
+            .build();
+
+	var mobileDemo = { 'center': '-32.890615,-68.8484', 'zoom': 10 };
+
+	var watchID = null;
+
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // Cordova is loaded and it is now safe to make calls Cordova methods
+    //
+    function onDeviceReady() {
+    	$.support.cors = true;
+		$.mobile.allowCrossDomainPages = true;
+	}
+
+
+
+
+//////////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina PRINCIPAL 
+	$(document).on('pageinit', '#page',  function(){
+
+		$("#btnconectar").click(function() {
+			Conectar();
+		});
+
+	});
+
+	function Conectar(){
+		//leer moviles de la 
+		var result='Error'
+		$.ajax({
+			type: "POST",
+			url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/GetMoviles",
+			data: "{ idpropietario: 33}",
+			crossDomain: true,
+			contentType: "application/json; charset=utf-8",
+			datatype: "jsonp",
+			success: function (data) {
+				var movil = data.d;
+	            $.each(movil, function (index, m) {
+					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
+	            });
+	            		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
+
+			},
+			error: function (err) {
+				alert(err.text);
+			},
+			async: false,
+        	cache: false
+		});
+
+	}
+
+	
+    </script>
+</head> 
+<body> 
+
+<div data-role="page" id="page">
+	<div data-role="header" data-position="fixed">
+		<h1>Simulador AVL</h1>
+	</div>
+	<div data-role="content">	
+		<div id="controles">
+			<div data-role="fieldcontain" id="groupfield2">
+	    		<label for="ip">IP server:</label>
+	    		<input type="text" name="ip" id="ip" value="190.220.216.249"  />
+	        </div>
+	    </div>
+		<a href="" data-role="button" id="btnconectar" data-icon="refresh" data-theme="b">Conectar</a>
+			<div data-role="fieldcontain" id="groupfield1">
+				<label for="idequipoSelect">Seleccione un móvil: </label>
+				<select id="idequipoSelect" name="idequipoSelect"></select>
+	        </div>
+
+		<div id="msj"></div>
+	</div>
+	<div data-role="footer"  data-position="fixed">
+		<h5>Desarrollado por Daniel Alvarez</h5>
+	</div>
+</div>
+
+
+
+</body>
+
+</html>

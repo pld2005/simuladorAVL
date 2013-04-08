@@ -65,6 +65,88 @@
 
 
 
+	function Recorrido(movilid, lat,lng,vel,rum,evento,panico,fueradeservicio,input3,input4,ocupado,input6,sms,contacto,conf){
+		return {
+			movilid:movilid,
+			lat:lat,
+			lng:lng,
+			vel:vel,
+			rum:rum,
+			evento:evento,
+			panico:panico,
+			fueradeservicio:fueradeservicio,
+			input3:input3,
+			input4:input4,
+			ocupado:ocupado,
+			input6:input6,
+			sms:sms,
+			contacto:contacto,
+			conf:conf
+		}
+	}
+
+	function EnviarPosicionActual() {
+			$('#result').html("Obteniendo datos del GPS...");
+
+			navigator.geolocation.getCurrentPosition(function (posicion){
+				latActual = posicion.coords.latitude;
+				lngActual = posicion.coords.longitude;
+				$('#result').html("Enviando, espere por favor...");
+				$('#result').fadeIn("fast");
+			}, 
+			function() {
+				$("#result").html("Error GPS!");
+			});
+	}
+
+	function Enviar(lat, lng) {
+		//web service para insertar recorrido
+		$.ajax({
+            type: "POST",
+            url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/insertData",
+            data: "{movilid:" + $("#idequipoSelect").val() + ",lat:'" + lat + "',lng:'" + lng + "',vel:0,rum:0,evento:0,panico:0,fueradeservicio:0,input3:0,input4:0,ocupado:0,input6:0,sms:0,contacto:0,conf:'conf'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+			success: function(data) {
+				//$('#result').html(data.d);
+			},
+            error: function (msg) {
+                $('#result').html(msg.statusText);
+            }
+        });
+	}
+
+	function EnviarRecorrido() {
+		if (recorridoIndex<=cantRecorrido) {
+			$('#result').html("Enviando, espere por favor...");
+			$('#result').fadeIn("fast");
+			//timer para segundero
+			$('#countDown').fadeIn();
+			timer = setInterval(function() { 
+					$('#countDown span').text(sec--);
+					if (sec == 0) {
+  						//$('#countDown').fadeOut('fast');
+  						clearInterval(timer);
+  						sec=30;
+					} 
+					if (sec==27) $('#result').fadeOut("slow");
+			}, 1000);
+			//actualizar barra de progreso
+			progressbar1.setValue((recorridoIndex+1)/cantRecorrido*100);
+
+			Enviar(recorridoArray[recorridoIndex].lat,recorridoArray[recorridoIndex].lng);
+
+			recorridoIndex = recorridoIndex +1;
+			
+		}else{
+			$('#result').html("Envio completado!");
+			$("progressbar").fadeOut();
+			clearInterval(MyTimer);
+			MyTimer =null;
+		}
+	}
+	
+	
 //////////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina PRINCIPAL 
 	$(document).on('pageinit', '#page',  function(){
 
@@ -75,21 +157,21 @@
 	});
 
 	function Conectar(){
-		//leer moviles de la 
+		//leer moviles de la demo
 		var result='Error'
 		$.ajax({
 			type: "POST",
 			url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/GetMoviles",
 			data: "{ idpropietario: 33}",
-			crossDomain: true,
 			contentType: "application/json; charset=utf-8",
+			crossDomain: true,
 			datatype: "jsonp",
 			success: function (data) {
 				var movil = data.d;
 	            $.each(movil, function (index, m) {
 					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
 	            });
-	            		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
+	            $("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
 
 			},
 			error: function (err) {
@@ -99,9 +181,131 @@
         	cache: false
 		});
 
+		if (result!="OK"){
+			//carga pagina con botones
+			$.mobile.changePage("#main",{transition: "slideup"})
+
+		}else{
+        	$("#msj").html("Error: no se pudo conectar al servidor.");
+        }
 	}
 
+	$(document).on('pageinit', '#main',  function(){
+		$("#iplabel span").text($("#ip").val());
+	});
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	$(document).on('pageinit', '#posActual',  function(){
+		
+
+		//boton enviar posicion actual
+		$("#btnEnviarPosActual").click(function (){
+			$("#map_canvas_2").fadeOut("slow", function(){
+				$("#map_canvas_2").fadeIn("slow", function() {				
+				});
+			});
+			navigator.geolocation.getCurrentPosition(function(position) {
+				Enviar(position.coords.latitude, position.coords.longitude);
+			},function(error){
+        		alert(error.message);
+        	});
+			
+		});
+
+		$('#map_canvas_2').gmap({
+			'center': mobileDemo.center, 
+			'zoom': mobileDemo.zoom, 
+			'disableDefaultUI':true, 
+			'callback': function(map) {
+				var self = this;
+				var options = { timeout: 30000 };
+        		watchID = navigator.geolocation.watchPosition(function(position) {
+        			var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		        	if (!self.get('markers').client) {
+						self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
+					} else {
+						self.get('markers').client.setPosition(latlng);
+						map.panTo(latlng);
+					}
+        		}, function(error){
+        			alert(error.message);
+        		}, options);
+			}
+		});
+	});
 	
+	$(document).on('pageshow', '#posActual',  function(){
+		 $('#map_canvas_2').gmap('refresh');
+	});
+	
+	$(document).on('pagehide', '#posActual',  function(){
+		$('#map_canvas_2').gmap('clearWatch'); 
+		if (watchID != null) {
+            navigator.geolocation.clearWatch(watchID);
+            watchID = null;
+        }
+	});
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina ENVIAR RECORRIDO 
+	$(document).on('pageinit', '#resultXML',  function(){
+		
+		//leer xml con recorrido
+		$.ajax({
+			type: "GET",
+			url: "reportes.xml",
+			dataType: "xml",
+			success: parseXml,
+			error: function(err){
+				alert("ERR: " + err);
+			}
+		});
+		
+        
+		//set timer para enviar recorrido cada 30 segundos
+		$("#btnSend").click(function (){
+			recorridoIndex=0;
+			$('#groupfield').fadeOut('fast');
+			$('#btnCancelar').fadeIn('fast');
+
+			EnviarRecorrido();
+			MyTimer = setInterval(function () { 
+				EnviarRecorrido();				
+			}, 30000);
+		})
+
+		$("#btnCancelar").click(function (){
+			$('#result').html("Envio cancelado!");
+			$('#countDown span').text(30);
+			$("progressbar").fadeOut();
+			$('#idequipoSelect').fadeIn('fast');
+			$('#groupfield').fadeIn('fast');
+			$('#countDown').fadeOut('fast');
+			$('#btnCancelar').fadeOut('fast');
+			$('#progressbar').fadeOut('fast');
+			clearInterval(MyTimer);
+			clearInterval(timer);
+			timer=null;
+			sec=30;
+			MyTimer =null;
+		});});
+
+	function parseXml(xml) {
+		$(xml).find('reporte').each(function() {
+			var r = Recorrido(6033, 
+							  $(this).find("lat").text(), 
+							  $(this).find("lng").text(), 
+							  0, 
+							  0,
+							  $(this).find("estado").text(),
+							  0, 0, 0, 0, 0, 0, 0, 0,"");
+			
+			recorridoArray.push(r);
+			cantRecorrido = cantRecorrido + 1;
+		});}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     </script>
 </head> 
 <body> 
@@ -118,11 +322,6 @@
 	        </div>
 	    </div>
 		<a href="" data-role="button" id="btnconectar" data-icon="refresh" data-theme="b">Conectar</a>
-			<div data-role="fieldcontain" id="groupfield1">
-				<label for="idequipoSelect">Seleccione un móvil: </label>
-				<select id="idequipoSelect" name="idequipoSelect"></select>
-	        </div>
-
 		<div id="msj"></div>
 	</div>
 	<div data-role="footer"  data-position="fixed">
@@ -130,6 +329,65 @@
 	</div>
 </div>
 
+<div data-role="page" id="main">
+	<div data-role="header">
+		<h1>Simulador AVL</h1>
+	</div>
+	<div data-role="content">	
+		<div id="controles">
+	    	
+	    	<div id="iplabel">Conectado a: <i><span></span><i></div>
+			<div data-role="fieldcontain" id="groupfield1">
+				<label for="idequipoSelect">Seleccione un móvil: </label>
+				<select id="idequipoSelect" name="idequipoSelect"></select>
+	        </div>
+	    	<a href="#posActual" data-role="button" id="btnpos">Posición actual.</a>
+	        
+	        <a href="#resultXML" data-role="button" id="btnreadXML">Simular recorrido</a>
+	    </div>
+		
+	</div>
+	<div data-role="footer" position="fixed">
+		<h5>Desarrollado por Daniel Alvarez</h5>
+	</div>
+</div>
+
+
+<div data-role="page" id="posActual">
+	<div data-role="header">
+		<h1>Posición actual</h1>
+	</div>
+	<div data-role="content">
+		<div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
+			<div id="map_canvas_2" style="height:300px;"></div>
+		</div>
+		<a  href="" data-role="button" id="btnEnviarPosActual">Enviar</a>
+        <div id="result"></div>
+	</div>	
+	<div data-role="footer">
+		<h5>Desarrollado por Daniel Alvarez</h5>
+	</div>
+</div>
+
+
+
+<div data-role="page" id="resultXML">
+	<div data-role="header">
+		<h1>Simular recorrido</h1>
+	</div>
+	<div data-role="content">	
+    	<div data-role="fieldcontain" id="groupfield">
+        	<a  href="" data-role="button" id="btnSend">Enviar datos de recorrido.</a>
+        </div>
+		<div id="countDown" style="display: none;">
+			Se enviará una nueva posición en <span>30</span> seg.
+		</div>
+		<a  href="" data-role="button" id="btnCancelar"  style="display: none;">Cancelar</a>
+        <div id="progressbar"></div>
+        <div id="result"></div>
+	</div>
+
+</div>
 
 
 </body>
