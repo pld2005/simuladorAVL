@@ -21,7 +21,6 @@
 <script type="text/javascript" src="ui/min/jquery.ui.map.min.js"></script>
 <script type="text/javascript" src="ui/min/jquery.ui.map.services.min.js"></script>
 
-<script src="http://debug.phonegap.com/target/target-script-min.js#simuladorAVL"></script>
 <script type="text/javascript" charset="utf-8">
 
     // Wait for Cordova to load
@@ -162,20 +161,19 @@
 		$.ajax({
 			type: "POST",
 			url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/GetMoviles",
+			crossDomain: true,
 			data: "{ idpropietario: 33}",
 			contentType: "application/json; charset=utf-8",
-			crossDomain: true,
 			datatype: "jsonp",
 			success: function (data) {
 				var movil = data.d;
 	            $.each(movil, function (index, m) {
 					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
 	            });
-	            $("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
 	            result="OK";
 			},
 			error: function (err) {
-				alert(err.text);
+				alert(err);
 			},
 			async: false,
         	cache: false
@@ -192,6 +190,8 @@
 
 	$(document).on('pageinit', '#main',  function(){
 		$("#iplabel span").text($("#ip").val());
+		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
+	            
 	});
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
