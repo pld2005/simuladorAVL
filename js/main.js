@@ -18,13 +18,15 @@
 //--------------------------- VARIABLES Y FUNCIONES DE LA PAGINA ***** POSICION ACTUAL ***** --------------------------------------------------------  
 //---------------------------------------------------------------------------------------------------------------------------------------------------        
 
-
+	var movilSeleccionado = 0;
 	var latActual;
 	var lngActual;
 	var mobileDemo = { 'center': '-32.890615,-68.8484', 'zoom': 10 };
 	var watchID = null;
 
 	$(document).on('pageinit', '#geoPos',  function(){
+		$("#idmovil span").text(movilSeleccionado);
+		
 		$('#map_canvas_2').gmap({
 			'center': mobileDemo.center, 
 			'zoom': mobileDemo.zoom, 
@@ -78,7 +80,7 @@
 		$.ajax({
             type: "POST",
             url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/insertData",
-            data: "{movilid:" + $("#idequipoSelect").val() + ",lat:'" + lat + "',lng:'" + lng + "',vel:0,rum:0,evento:0,panico:0,fueradeservicio:0,input3:0,input4:0,ocupado:0,input6:0,sms:0,contacto:0,conf:'conf'}",
+            data: "{movilid:" + movilSeleccionado + ",lat:'" + lat + "',lng:'" + lng + "',vel:0,rum:0,evento:0,panico:0,fueradeservicio:0,input3:0,input4:0,ocupado:0,input6:0,sms:0,contacto:0,conf:'conf'}",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
 			success: function(data) {
@@ -136,7 +138,14 @@
 //---------------------------------------------------------------------------------------------------------------------------------------------------        
 	$(document).on('pageinit', '#main',  function(){
 		$("#iplabel span").text($("#ip").val());
+		$("#idequipoSelect").change(function() {
+        	alert($("#idequipoSelect").val());
+        	movilSeleccionado=$("#idequipoSelect").val();
+    	});
+
 		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true);
+
+
 		$("#btnpos").click(function() {
 			$.mobile.changePage("posicionactual.html", {transition: "slideup"});
 		});
@@ -218,7 +227,9 @@
 
 
 	$(document).on('pageinit', '#resultXML',  function(){
+		$("#idmovil span").text(movilSeleccionado);
 		//leer xml con recorrido
+		cantRecorrido=0;
 		$.ajax({
 			type: "GET",
 			url: "reportes.xml",
@@ -254,7 +265,8 @@
 			timer=null;
 			sec=30;
 			MyTimer =null;
-		});});
+		});
+	});
 
 	function parseXml(xml) {
 		$(xml).find('reporte').each(function() {

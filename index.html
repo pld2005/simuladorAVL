@@ -51,44 +51,21 @@
 	<div data-role="content">	
 		<div id="controles">
 	    	
-	    	<div id="iplabel">Conectado a: <i><span></span><i></div>
+	    	<div id="iplabel">Conectado a: <i><span></span></i></div>
 			<div data-role="fieldcontain" id="groupfield1">
 				<label for="idequipoSelect">Seleccione un móvil: </label>
 				<select id="idequipoSelect" name="idequipoSelect"></select>
 	        </div>
 	    	<a href="#" data-role="button" id="btnpos">Posición actual.</a>
 	        
-	        <a href="#resultXML" data-role="button" id="btnreadXML">Simular recorrido</a>
+	        <a href="#" data-role="button" id="btnreadXML">Simular recorrido</a>
 	    </div>
 		
 	</div>
-	<div data-role="footer" position="fixed">
+	<div data-role="footer" data-position="fixed">
 		<h5>Desarrollado por Daniel Alvarez</h5>
 	</div>
 </div>
-
-
-
-
-
-<div data-role="page" id="resultXML">
-	<div data-role="header">
-		<h1>Simular recorrido</h1>
-	</div>
-	<div data-role="content">	
-    	<div data-role="fieldcontain" id="groupfield">
-        	<a  href="" data-role="button" id="btnSend">Enviar datos de recorrido.</a>
-        </div>
-		<div id="countDown" style="display: none;">
-			Se enviará una nueva posición en <span>30</span> seg.
-		</div>
-		<a  href="" data-role="button" id="btnCancelar"  style="display: none;">Cancelar</a>
-        <div id="progressbar"></div>
-        <div id="result"></div>
-	</div>
-
-</div>
-
 
 </body>
 
