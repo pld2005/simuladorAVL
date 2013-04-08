@@ -28,7 +28,7 @@
 
     function onDeviceReady() {
 
-	    $(document).on('pageinit', '#posActual',  function(){
+	    //$(document).on('pageinit', '#posActual',  function(){
 			//boton enviar posicion actual
 			$("#btnEnviarPosActual").click(function (){
 				$("#map_canvas_2").fadeOut("slow", function(){
@@ -42,7 +42,7 @@
 	        	});
 				
 			});
-
+alert("ccc");
 			$('#map_canvas_2').gmap({
 				'center': mobileDemo.center, 
 				'zoom': mobileDemo.zoom, 
@@ -63,9 +63,9 @@
 	        		}, options);
 				}
 			});
-		});
+		//});
 		
-		$(document).on('pageshow', '#posActual',  function(){
+		/*$(document).on('pageshow', '#posActual',  function(){
 			 $('#map_canvas_2').gmap('refresh');
 		});
 		
@@ -75,7 +75,7 @@
 	            navigator.geolocation.clearWatch(watchID);
 	            watchID = null;
 	        }
-		});
+		});*/
 	}
 </script>
 </head>
