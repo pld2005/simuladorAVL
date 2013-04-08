@@ -26,7 +26,19 @@
 
 	$(document).on('pageinit', '#geoPos',  function(){
 		$("#idmovil span").text(movilSeleccionado);
+		//boton enviar posicion actual
+		$("#btnEnviarPosActual").click(function (){
+			$("#map_canvas_2").fadeOut("slow", function(){
+				$("#map_canvas_2").fadeIn("slow", function() {				
+				});
+			});
+			navigator.geolocation.getCurrentPosition(function(position) {
+				Enviar(position.coords.latitude, position.coords.longitude);
+			},function(error){
+	    		alert(error.message);
+	    	});
 
+		});
 		$('#map_canvas_2').gmap({
 			'center': mobileDemo.center, 
 			'zoom': mobileDemo.zoom, 
@@ -62,19 +74,7 @@
         }
 	});
 
-	//boton enviar posicion actual
-	$("#btnEnviarPosActual").click(function (){
-		$("#map_canvas_2").fadeOut("slow", function(){
-			$("#map_canvas_2").fadeIn("slow", function() {				
-			});
-		});
-		navigator.geolocation.getCurrentPosition(function(position) {
-			Enviar(position.coords.latitude, position.coords.longitude);
-		},function(error){
-    		alert(error.message);
-    	});
 
-	});
 
 	function Enviar(lat, lng) {
 		//web service para insertar recorrido
