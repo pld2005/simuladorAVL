@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <reportes>
-	<reporte>
-		<id>1</id>
-		<lat>-32.233365</lat>
-		<lng>-68.23659</lng>
-		<fechahora>01/09/2012 12:22:00</fechahora>
-		<vel>10</vel>
-		<cur>120</cur>
-		<estado>0</estado>
-	</reporte>
-	<reporte>
-		<id>2</id>
-		<lat>-32.123123123</lat>
-		<lng>-68.5463453</lng>
-		<fechahora>01/09/2012 12:23:00</fechahora>
-		<vel>10</vel>
-		<cur>120</cur>
-		<estado>0</estado>
-	</reporte>
-	<reporte>
-		<id>3</id>
-		<lat>-32.1231243</lat>
-		<lng>-68.87898</lng>
-		<fechahora>01/09/2012 12:24:00</fechahora>
-		<vel>10</vel>
-		<cur>120</cur>
-		<estado>0</estado>
-	</reporte>
-	<reporte>
-		<id>4</id>
-		<lat>-32.9998908</lat>
-		<lng>-68.5555576</lng>
-		<fechahora>01/09/2012 12:25:00</fechahora>
-		<vel>10</vel>
-		<cur>120</cur>
-		<estado>0</estado>
-	</reporte>
+<reporte><id>1</id><lat>-32,8817133333333</lat><lng>-68,84249<fechahora>2012-12-15 11:00:07</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>2</id><lat>-32,8817133333333</lat><lng>-68,84249<fechahora>2012-12-15 11:00:08</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>3</id><lat>-32,8594483333333</lat><lng>-68,84984<fechahora>2012-12-15 10:50:20</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>4</id><lat>-32,8594483333333</lat><lng>-68,84984<fechahora>2012-12-15 10:50:54</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>5</id><lat>-32,8594483333333</lat><lng>-68,84984<fechahora>2012-12-15 10:50:56</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>6</id><lat>-32,8600866666667</lat><lng>-68,8498516666667<fechahora>2012-12-15 10:51:37</fechahora><vel>26</vel><cur>167</cur><estado>3</estado></reporte>
+<reporte><id>7</id><lat>-32,86036</lat><lng>-68,8464883333333<fechahora>2012-12-15 10:52:19</fechahora><vel>35</vel><cur>84</cur><estado>3</estado></reporte>
+<reporte><id>8</id><lat>-32,860265</lat><lng>-68,8439066666667<fechahora>2012-12-15 10:53:01</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>9</id><lat>-32,8620833333333</lat><lng>-68,843945<fechahora>2012-12-15 10:53:44</fechahora><vel>93</vel><cur>57</cur><estado>3</estado></reporte>
+<reporte><id>10</id><lat>-32,8622366666667</lat><lng>-68,843985<fechahora>2012-12-15 10:54:26</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>11</id><lat>-32,864665</lat><lng>-68,843875<fechahora>2012-12-15 10:55:09</fechahora><vel>34</vel><cur>176</cur><estado>3</estado></reporte>
+<reporte><id>12</id><lat>-32,8679533333333</lat><lng>-68,8430433333333<fechahora>2012-12-15 10:55:50</fechahora><vel>40</vel><cur>189</cur><estado>3</estado></reporte>
+<reporte><id>13</id><lat>-32,870425</lat><lng>-68,8436033333333<fechahora>2012-12-15 10:56:32</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>14</id><lat>-32,8722783333333</lat><lng>-68,8440033333333<fechahora>2012-12-15 10:57:14</fechahora><vel>29</vel><cur>185</cur><estado>3</estado></reporte>
+<reporte><id>15</id><lat>-32,8728416666667</lat><lng>-68,8418666666667<fechahora>2012-12-15 10:57:56</fechahora><vel>30</vel><cur>104</cur><estado>3</estado></reporte>
+<reporte><id>16</id><lat>-32,8758033333333</lat><lng>-68,8408266666667<fechahora>2012-12-15 10:58:38</fechahora><vel>38</vel><cur>194</cur><estado>3</estado></reporte>
+<reporte><id>17</id><lat>-32,8827483333333</lat><lng>-68,8450366666667<fechahora>2012-12-15 11:00:50</fechahora><vel>35</vel><cur>280</cur><estado>3</estado></reporte>
+<reporte><id>18</id><lat>-32,8824066666667</lat><lng>-68,8466083333333<fechahora>2012-12-15 11:01:32</fechahora><vel>14</vel><cur>354</cur><estado>3</estado></reporte>
+<reporte><id>19</id><lat>-32,879225</lat><lng>-68,845785<fechahora>2012-12-15 11:02:14</fechahora><vel>14</vel><cur>5</cur><estado>3</estado></reporte>
+<reporte><id>20</id><lat>-32,8783983333333</lat><lng>-68,849415<fechahora>2012-12-15 11:02:56</fechahora><vel>26</vel><cur>282</cur><estado>3</estado></reporte>
+<reporte><id>21</id><lat>-32,8781</lat><lng>-68,8511183333333<fechahora>2012-12-15 11:03:18</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>22</id><lat>-32,8779</lat><lng>-68,8522616666667<fechahora>2012-12-15 11:03:59</fechahora><vel>34</vel><cur>279</cur><estado>3</estado></reporte>
+<reporte><id>23</id><lat>-32,8810116666667</lat><lng>-68,8538266666667<fechahora>2012-12-15 11:04:41</fechahora><vel>22</vel><cur>192</cur><estado>3</estado></reporte>
+<reporte><id>24</id><lat>-32,8838166666667</lat><lng>-68,854455<fechahora>2012-12-15 11:05:22</fechahora><vel>18</vel><cur>136</cur><estado>3</estado></reporte>
+<reporte><id>25</id><lat>-32,88421</lat><lng>-68,850135<fechahora>2012-12-15 11:06:10</fechahora><vel>14</vel><cur>104</cur><estado>3</estado></reporte>
+<reporte><id>26</id><lat>-32,88421</lat><lng>-68,850135<fechahora>2012-12-15 11:06:13</fechahora><vel>14</vel><cur>104</cur><estado>3</estado></reporte>
+<reporte><id>27</id><lat>-32,88421</lat><lng>-68,850135<fechahora>2012-12-15 11:06:14</fechahora><vel>14</vel><cur>104</cur><estado>3</estado></reporte>
+<reporte><id>28</id><lat>-32,8846383333333</lat><lng>-68,8477216666667<fechahora>2012-12-15 11:06:56</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>29</id><lat>-32,8847766666667</lat><lng>-68,8471<fechahora>2012-12-15 11:07:38</fechahora><vel>19</vel><cur>99</cur><estado>3</estado></reporte>
+<reporte><id>30</id><lat>-32,885135</lat><lng>-68,8451083333333<fechahora>2012-12-15 11:08:20</fechahora><vel>18</vel><cur>99</cur><estado>3</estado></reporte>
+<reporte><id>31</id><lat>-32,8853733333333</lat><lng>-68,8436783333333<fechahora>2012-12-15 11:09:02</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>32</id><lat>-32,88565</lat><lng>-68,8422733333333<fechahora>2012-12-15 11:09:44</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
+<reporte><id>33</id><lat>-32,8859733333333</lat><lng>-68,8403616666667<fechahora>2012-12-15 11:10:26</fechahora><vel>22</vel><cur>100</cur><estado>3</estado></reporte>
+<reporte><id>34</id><lat>-32,8862483333333</lat><lng>-68,8396066666667<fechahora>2012-12-15 11:11:08</fechahora><vel>14</vel><cur>171</cur><estado>3</estado></reporte>
+<reporte><id>35</id><lat>-32,8880933333333</lat><lng>-68,840175<fechahora>2012-12-15 11:11:49</fechahora><vel>0</vel><cur>0</cur><estado>3</estado></reporte>
 </reportes> 

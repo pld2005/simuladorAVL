@@ -228,6 +228,8 @@
 			$("progressbar").fadeOut();
 			clearInterval(MyTimer);
 			MyTimer =null;
+			clearInterval(timer);
+			timer =null;
 		}
 	}
 
