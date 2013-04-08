@@ -170,26 +170,19 @@
 	            $.each(movil, function (index, m) {
 					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
 	            });
-	            result="OK";
+				$.mobile.changePage("#main",{transition: "slideup"})
 			},
 			error: function (err) {
-				alert(err);
-			},
+		    	$("#msj").html("Error: no se pudo conectar al servidor.");
+    		},
 			async: false,
         	cache: false
 		});
-
-		if (result!="OK"){
-			//carga pagina con botones
-			$.mobile.changePage("#main",{transition: "slideup"})
-
-		}else{
-        	$("#msj").html("Error: no se pudo conectar al servidor.");
-        }
 	}
 
 	$(document).on('pageinit', '#main',  function(){
 		$("#iplabel span").text($("#ip").val());
+		alert(optionlist);
 		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
 	            
 	});

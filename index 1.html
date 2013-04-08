@@ -89,7 +89,7 @@
 	            $.each(movil, function (index, m) {
 					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
 	            });
-	            		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
+	            alert(optionlist);//		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
 
 			},
 			error: function (err) {
