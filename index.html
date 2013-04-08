@@ -11,15 +11,15 @@
 <link rel="stylesheet" href="css/jquery.mobile.theme-1.0.min.css" /-->
 <link rel="stylesheet" type="text/css" href="css/tolito-1.0.2.min.css" />
 
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<!--script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script-->
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.mobile-1.3.0.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/cordova-2.5.0.js"></script>
 <script type="text/javascript" src="js/tolito-1.0.2.min.js"></script>
 
-<script src="ui/min/jquery.ui.map.full.min.js" type="text/javascript"></script>
+<!--script src="ui/min/jquery.ui.map.full.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="ui/min/jquery.ui.map.min.js"></script>
-<script type="text/javascript" src="ui/min/jquery.ui.map.services.min.js"></script>
+<script type="text/javascript" src="ui/min/jquery.ui.map.services.min.js"></script-->
 
 <script type="text/javascript" charset="utf-8">
 
@@ -148,10 +148,14 @@
 	
 //////////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina PRINCIPAL 
 	$(document).on('pageinit', '#page',  function(){
-
+	$("#btnpos").click(function() {
+			alert("x");
+			$.mobile.changePage("posicionactual.html");
+		});
 		$("#btnconectar").click(function() {
 			Conectar();
 		});
+
 
 	});
 
@@ -182,67 +186,11 @@
 
 	$(document).on('pageinit', '#main',  function(){
 		$("#iplabel span").text($("#ip").val());
-		alert(optionlist);
-		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
-	            
+		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true);
 	});
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	$(document).on('pageinit', '#posActual',  function(){
-		
-
-		//boton enviar posicion actual
-		$("#btnEnviarPosActual").click(function (){
-			$("#map_canvas_2").fadeOut("slow", function(){
-				$("#map_canvas_2").fadeIn("slow", function() {				
-				});
-			});
-			navigator.geolocation.getCurrentPosition(function(position) {
-				Enviar(position.coords.latitude, position.coords.longitude);
-			},function(error){
-        		alert(error.message);
-        	});
-			
-		});
-
-		$('#map_canvas_2').gmap({
-			'center': mobileDemo.center, 
-			'zoom': mobileDemo.zoom, 
-			'disableDefaultUI':true, 
-			'callback': function(map) {
-				var self = this;
-				var options = { timeout: 30000 };
-        		watchID = navigator.geolocation.watchPosition(function(position) {
-        			var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		        	if (!self.get('markers').client) {
-						self.addMarker({ 'id': 'client', 'position': latlng, 'bounds': true });
-					} else {
-						self.get('markers').client.setPosition(latlng);
-						map.panTo(latlng);
-					}
-        		}, function(error){
-        			alert(error.message);
-        		}, options);
-			}
-		});
-	});
-	
-	$(document).on('pageshow', '#posActual',  function(){
-		 $('#map_canvas_2').gmap('refresh');
-	});
-	
-	$(document).on('pagehide', '#posActual',  function(){
-		$('#map_canvas_2').gmap('clearWatch'); 
-		if (watchID != null) {
-            navigator.geolocation.clearWatch(watchID);
-            watchID = null;
-        }
-	});
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina ENVIAR RECORRIDO 
 	$(document).on('pageinit', '#resultXML',  function(){
-		
 		//leer xml con recorrido
 		$.ajax({
 			type: "GET",
@@ -254,13 +202,11 @@
 			}
 		});
 		
-        
 		//set timer para enviar recorrido cada 30 segundos
 		$("#btnSend").click(function (){
 			recorridoIndex=0;
 			$('#groupfield').fadeOut('fast');
 			$('#btnCancelar').fadeIn('fast');
-
 			EnviarRecorrido();
 			MyTimer = setInterval(function () { 
 				EnviarRecorrido();				
@@ -295,7 +241,8 @@
 			
 			recorridoArray.push(r);
 			cantRecorrido = cantRecorrido + 1;
-		});}
+		});
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -316,6 +263,7 @@
 	    </div>
 		<a href="" data-role="button" id="btnconectar" data-icon="refresh" data-theme="b">Conectar</a>
 		<div id="msj"></div>
+		<a href="#" data-role="button" id="btnpos">Posición actual.</a>
 	</div>
 	<div data-role="footer"  data-position="fixed">
 		<h5>Desarrollado por Daniel Alvarez</h5>
@@ -334,7 +282,7 @@
 				<label for="idequipoSelect">Seleccione un móvil: </label>
 				<select id="idequipoSelect" name="idequipoSelect"></select>
 	        </div>
-	    	<a href="#posActual" data-role="button" id="btnpos">Posición actual.</a>
+	    	<a href="#pagina2" data-role="button" id="btnpos1">Posición actual.</a>
 	        
 	        <a href="#resultXML" data-role="button" id="btnreadXML">Simular recorrido</a>
 	    </div>
@@ -346,21 +294,6 @@
 </div>
 
 
-<div data-role="page" id="posActual">
-	<div data-role="header">
-		<h1>Posición actual</h1>
-	</div>
-	<div data-role="content">
-		<div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
-			<div id="map_canvas_2" style="height:300px;"></div>
-		</div>
-		<a  href="" data-role="button" id="btnEnviarPosActual">Enviar</a>
-        <div id="result"></div>
-	</div>	
-	<div data-role="footer">
-		<h5>Desarrollado por Daniel Alvarez</h5>
-	</div>
-</div>
 
 
 
