@@ -26,7 +26,7 @@
 
 	$(document).on('pageinit', '#geoPos',  function(){
 		$("#idmovil span").text(movilSeleccionado);
-		
+
 		$('#map_canvas_2').gmap({
 			'center': mobileDemo.center, 
 			'zoom': mobileDemo.zoom, 
@@ -51,6 +51,7 @@
 
 	$(document).on('pageshow', '#geoPos',  function(){
 		 $('#map_canvas_2').gmap('refresh');
+		 $.mobile.hidePageLoadingMsg();
 	});
 	
 	$(document).on('pagehide', '#geoPos',  function(){
@@ -77,6 +78,7 @@
 
 	function Enviar(lat, lng) {
 		//web service para insertar recorrido
+		$.mobile.showPageLoadingMsg("a", "Enviando...");
 		$.ajax({
             type: "POST",
             url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/insertData",
@@ -90,6 +92,7 @@
                 $('#result').html(msg.statusText);
             }
         });
+        $.mobile.hidePageLoadingMsg();
 	}
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------  
@@ -110,6 +113,7 @@
 
 	function Conectar(){
 		//leer moviles de la demo
+		$.mobile.showPageLoadingMsg("a", "Conectando a "  + $("#ip").val() + "...");
 		var result='Error'
 		$.ajax({
 			type: "POST",
@@ -131,6 +135,7 @@
 			async: false,
         	cache: false
 		});
+		$.mobile.hidePageLoadingMsg();
 	}
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------  
@@ -139,14 +144,15 @@
 	$(document).on('pageinit', '#main',  function(){
 		$("#iplabel span").text($("#ip").val());
 		$("#idequipoSelect").change(function() {
-        	alert($("#idequipoSelect").val());
         	movilSeleccionado=$("#idequipoSelect").val();
     	});
 
 		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true);
 
+		movilSeleccionado=$("#idequipoSelect").val();
 
 		$("#btnpos").click(function() {
+			$.mobile.showPageLoadingMsg("a", "Cargando...");
 			$.mobile.changePage("posicionactual.html", {transition: "slideup"});
 		});
 		$("#btnreadXML").click(function() {
