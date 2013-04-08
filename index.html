@@ -31,8 +31,6 @@
 	var MyTimer;
 	var sec = 30;
 	var timer;
-	var latActual;
-	var lngActual;
     var networkState = '';
 	var optionlist=""; //usada para cargar los moviles en el combo
 	var states = {};
@@ -84,36 +82,6 @@
 		}
 	}
 
-	function EnviarPosicionActual() {
-			$('#result').html("Obteniendo datos del GPS...");
-
-			navigator.geolocation.getCurrentPosition(function (posicion){
-				latActual = posicion.coords.latitude;
-				lngActual = posicion.coords.longitude;
-				$('#result').html("Enviando, espere por favor...");
-				$('#result').fadeIn("fast");
-			}, 
-			function() {
-				$("#result").html("Error GPS!");
-			});
-	}
-
-	function Enviar(lat, lng) {
-		//web service para insertar recorrido
-		$.ajax({
-            type: "POST",
-            url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/insertData",
-            data: "{movilid:" + $("#idequipoSelect").val() + ",lat:'" + lat + "',lng:'" + lng + "',vel:0,rum:0,evento:0,panico:0,fueradeservicio:0,input3:0,input4:0,ocupado:0,input6:0,sms:0,contacto:0,conf:'conf'}",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-			success: function(data) {
-				//$('#result').html(data.d);
-			},
-            error: function (msg) {
-                $('#result').html(msg.statusText);
-            }
-        });
-	}
 
 	function EnviarRecorrido() {
 		if (recorridoIndex<=cantRecorrido) {
