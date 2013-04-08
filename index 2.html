@@ -172,7 +172,7 @@
 					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
 	            });
 	            $("#idequipoSelect").html(optionlist).selectmenu('refresh', true); 
-	            result="OK";
+
 			},
 			error: function (err) {
 				alert(err.text);
@@ -181,7 +181,7 @@
         	cache: false
 		});
 
-		if (result!="OK"){
+		if (result=="OK"){
 			//carga pagina con botones
 			$.mobile.changePage("#main",{transition: "slideup"})
 
