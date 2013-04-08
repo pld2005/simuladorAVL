@@ -9,17 +9,15 @@
 
     // Wait for Cordova to load
     // 
-	var recorridoArray = [];
-	var cantRecorrido = 0;
-	var recorridoIndex = 0;
-	var MyTimer;
-	var sec = 30;
-	var timer;
-    var networkState = '';
-	var optionlist=""; //usada para cargar los moviles en el combo
-	var states = {};
 	
-//---- varibles y funciones pagina posicion actual ---
+    //var networkState = '';
+	
+	//var states = {};
+	
+//---------------------------------------------------------------------------------------------------------------------------------------------------  
+//--------------------------- VARIABLES Y FUNCIONES DE LA PAGINA ***** POSICION ACTUAL ***** --------------------------------------------------------  
+//---------------------------------------------------------------------------------------------------------------------------------------------------        
+
 
 	var latActual;
 	var lngActual;
@@ -92,26 +90,80 @@
         });
 	}
 
+//---------------------------------------------------------------------------------------------------------------------------------------------------  
+//---------------------------------------------------------------------------------------------------------------------------------------------------  
+//---------------------------------------------------------------------------------------------------------------------------------------------------        
 
+	
+	
+//---------------------------------------------------------------------------------------------------------------------------------------------------  
+//--------------------------- VARIABLES Y FUNCIONES DE LA PAGINA ***** INICIAL  ***** --------------------------------------------------------  
+//---------------------------------------------------------------------------------------------------------------------------------------------------        
+	var optionlist=""; //usada para cargar los moviles en el combo
+	$(document).on('pageinit', '#page',  function(){
+		$("#btnconectar").click(function() {
+			Conectar();
+		});
+	});
 
-//--------------------------------------------------------------------------------        
+	function Conectar(){
+		//leer moviles de la demo
+		var result='Error'
+		$.ajax({
+			type: "POST",
+			url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/GetMoviles",
+			crossDomain: true,
+			data: "{ idpropietario: 33}",
+			contentType: "application/json; charset=utf-8",
+			datatype: "jsonp",
+			success: function (data) {
+				var movil = data.d;
+	            $.each(movil, function (index, m) {
+					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
+	            });
+				$.mobile.changePage("#main",{transition: "slideup"})
+			},
+			error: function (err) {
+		    	$("#msj").html("Error: no se pudo conectar al servidor.");
+    		},
+			async: false,
+        	cache: false
+		});
+	}
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------  
+//--------------------------- VARIABLES Y FUNCIONES DE LA PAGINA ***** MAIN (MENU)  ***** --------------------------------------------------------  
+//---------------------------------------------------------------------------------------------------------------------------------------------------        
+	$(document).on('pageinit', '#main',  function(){
+		$("#iplabel span").text($("#ip").val());
+		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true);
+		$("#btnpos").click(function() {
+			$.mobile.changePage("posicionactual.html", {transition: "slideup"});
+		});
+		$("#btnreadXML").click(function() {
+			$.mobile.changePage("recorrido.html", {transition: "slideup"});
+		});
+	});
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------  
+//--------------------------- VARIABLES Y FUNCIONES DE LA PAGINA ***** RECORRIDO  ***** --------------------------------------------------------  
+//---------------------------------------------------------------------------------------------------------------------------------------------------        
+	var recorridoArray = [];
+	var cantRecorrido = 0;
+	var recorridoIndex = 0;
+	var MyTimer;
+	var sec = 30;
+	var timer;
 	var progressbar1 = TolitoProgressBar('progressbar')
-            .setOuterTheme('b')
-            .setInnerTheme('e')
-            .isMini(true)
-            .setMax(100)
-            .setStartFrom(0)
-            .setInterval(10)
-            .showCounter(true)
-            .logOptions()
-            .build();
-
-
-
-
-
-
-
+        .setOuterTheme('b')
+        .setInnerTheme('e')
+        .isMini(true)
+        .setMax(100)
+        .setStartFrom(0)
+        .setInterval(10)
+        .showCounter(true)
+        .logOptions()
+        .build();
 
 	function Recorrido(movilid, lat,lng,vel,rum,evento,panico,fueradeservicio,input3,input4,ocupado,input6,sms,contacto,conf){
 		return {
@@ -163,53 +215,8 @@
 			MyTimer =null;
 		}
 	}
-	
-	
-//------------------------ funciones pagina PRINCIPAL 
-	$(document).on('pageinit', '#page',  function(){
-		$("#btnpos").click(function() {
-				$.mobile.changePage("posicionactual.html", {transition: "slideup"});
-			});
-			$("#btnconectar").click(function() {
-				Conectar();
-			});
-	});
-
-	function Conectar(){
-		//leer moviles de la demo
-		var result='Error'
-		$.ajax({
-			type: "POST",
-			url: "http://" + $("#ip").val() + "/wstracking/WebService1.asmx/GetMoviles",
-			crossDomain: true,
-			data: "{ idpropietario: 33}",
-			contentType: "application/json; charset=utf-8",
-			datatype: "jsonp",
-			success: function (data) {
-				var movil = data.d;
-	            $.each(movil, function (index, m) {
-					optionlist += '<option value=' + m.IdEquipo + '>' + m.Patente + '</option>'; 
-	            });
-				$.mobile.changePage("#main",{transition: "slideup"})
-			},
-			error: function (err) {
-		    	$("#msj").html("Error: no se pudo conectar al servidor.");
-    		},
-			async: false,
-        	cache: false
-		});
-	}
-
-//-------------------------------------------------------------------------------------------------------
 
 
-//------------------------- funciones pagina MAIN
-	$(document).on('pageinit', '#main',  function(){
-		$("#iplabel span").text($("#ip").val());
-		$("#idequipoSelect").html(optionlist).selectmenu('refresh', true);
-	});
-
-///////////////////////////////////////////////////////////////////se ejecuta cuando se inicia la pagina ENVIAR RECORRIDO 
 	$(document).on('pageinit', '#resultXML',  function(){
 		//leer xml con recorrido
 		$.ajax({
