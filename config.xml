@@ -18,8 +18,7 @@
 	<feature name="http://api.phonegap.com/1.0/geolocation"/>
 	<feature name="http://api.phonegap.com/1.0/network"/>
     <preference name="target-device" value="universal" />
-    <plugin name="SplashScreen" value="org.apache.cordova.SplashScreen"/>
-    <preference name="exit-on-suspend" value="true" />
+
 	<access origin="*" />
 	
 </widget>
