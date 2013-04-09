@@ -221,8 +221,7 @@
 
 			Enviar(recorridoArray[recorridoIndex].lat,recorridoArray[recorridoIndex].lng);
 
-			recorridoIndex = recorridoIndex +1;
-			
+			recorridoIndex++;
 		}else{
 			$('#result').html("Envio completado!");
 			$("progressbar").fadeOut();
