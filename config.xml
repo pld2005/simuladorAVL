@@ -14,8 +14,6 @@
     <author email="pld2005@gmail.com">Daniel Alvarez</author>
 
 	<icon src="GPS-sattelite.png" gap:role="default"/>
-	<splash src="splash.png" gap:platform="android" gap:density="hdpi">
-
 	<feature name="http://api.phonegap.com/1.0/geolocation"/>
 	<feature name="http://api.phonegap.com/1.0/network"/>
     <preference name="target-device" value="universal" />
