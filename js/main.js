@@ -5,6 +5,7 @@
     function onDeviceReady() {
     	$.support.cors = true;
 		$.mobile.allowCrossDomainPages = true;
+		navigator.notification.alert('Dispositivo listo!');
 	}
 
     // Wait for Cordova to load
