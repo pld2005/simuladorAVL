@@ -218,7 +218,9 @@
 					if (sec==27) $('#result').fadeOut("slow");
 			}, 1000);
 			//actualizar barra de progreso
-			progressbar1.setValue((recorridoIndex+1)/cantRecorrido*100);
+			var progreso = parseFloat((recorridoIndex+1)/cantRecorrido*100);
+               
+			progressbar1.setValue(progreso.toFixed(2));
 
 			Enviar(recorridoArray[recorridoIndex].lat,recorridoArray[recorridoIndex].lng);
 
