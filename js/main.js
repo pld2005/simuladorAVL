@@ -218,13 +218,13 @@
 					if (sec==27) $('#result').fadeOut("slow");
 			}, 1000);
 			//actualizar barra de progreso
-			var progreso = parseFloat((recorridoIndex+1)/cantRecorrido*100);
+			var progreso = (recorridoIndex+1)/cantRecorrido*100;
                
 			progressbar1.setValue(progreso.toFixed(2));
 
 			Enviar(recorridoArray[recorridoIndex].lat,recorridoArray[recorridoIndex].lng);
 
-			recorridoIndex++;
+			recorridoIndex=recorridoIndex+1;
 		}else{
 			$('#result').html("Envio completado!");
 			$("progressbar").fadeOut();
