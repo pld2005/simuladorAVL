@@ -159,6 +159,9 @@
 		$("#btnreadXML").click(function() {
 			$.mobile.changePage("recorrido.html", {transition: "slideup"});
 		});
+		$("#btnreadXMLchile").click(function() {
+			$.mobile.changePage("recorridochile.html", {transition: "slideup"});
+		});
 	});
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------  
@@ -220,7 +223,7 @@
 			//actualizar barra de progreso
 			var progreso = (recorridoIndex+1)/cantRecorrido*100;
                
-			progressbar1.setValue(progreso.toFixed(2));
+			progressbar1.setValue(progreso);
 
 			Enviar(recorridoArray[recorridoIndex].lat,recorridoArray[recorridoIndex].lng);
 
@@ -243,6 +246,48 @@
 		$.ajax({
 			type: "GET",
 			url: "reportes.xml",
+			dataType: "xml",
+			success: parseXml,
+			error: function(err){
+				alert("ERR: " + err);
+			}
+		});
+		
+		//set timer para enviar recorrido cada 30 segundos
+		$("#btnSend").click(function (){
+			recorridoIndex=0;
+			$('#groupfield').fadeOut('fast');
+			$('#btnCancelar').fadeIn('fast');
+			EnviarRecorrido();
+			MyTimer = setInterval(function () { 
+				EnviarRecorrido();				
+			}, 30000);
+		})
+
+		$("#btnCancelar").click(function (){
+			$('#result').html("Envio cancelado!");
+			$('#countDown span').text(30);
+			$("progressbar").fadeOut();
+			$('#idequipoSelect').fadeIn('fast');
+			$('#groupfield').fadeIn('fast');
+			$('#countDown').fadeOut('fast');
+			$('#btnCancelar').fadeOut('fast');
+			$('#progressbar').fadeOut('fast');
+			clearInterval(MyTimer);
+			clearInterval(timer);
+			timer=null;
+			sec=30;
+			MyTimer =null;
+		});
+	});
+
+	$(document).on('pageinit', '#resultXMLchile',  function(){
+		$("#idmovil span").text(movilSeleccionado);
+		//leer xml con recorrido
+		cantRecorrido=0;
+		$.ajax({
+			type: "GET",
+			url: "recorridochile.xml",
 			dataType: "xml",
 			success: parseXml,
 			error: function(err){
